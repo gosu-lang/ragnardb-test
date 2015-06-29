@@ -15,12 +15,12 @@ class HelloWorld {
 
 
     //TODO Contacts#Age exists?
-//    var x : Users.Contacts
-//    var y : Users.Scotts
-//
+    var x : Users.Contacts
+    var y : Users.Scotts
+
 //    x = Users.Contacts.get().where( \ c -> c.firstName == "carson")
-//
-//    print(y.FirstName)
+
+    print(y.FirstName)
   }
 
   public construct(someArg : String) {

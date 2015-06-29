@@ -67,6 +67,18 @@
   </dependencies>
 
   <build>
+    <sourceDirectory>src/main/gosu</sourceDirectory>
+    <testSourceDirectory>src/test/gosu</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
     <pluginManagement>
       <plugins>
         <plugin> <!-- set java compatibility version -->
