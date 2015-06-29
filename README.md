@@ -8,10 +8,8 @@ This is a Gosu-based test project incorporating the [ragnardb](https://github.co
 
 Two versions of IntelliJ are recommended:
 
-* IJ 13 for ragnar deveopment in Java
-* IJ 14 for use with this project
-
-The reason I suggest two installations is that IJ 14 will incorporate a preview release of the new ij-gosu plugin.
+* IJ 14
+* JDK 8
 
 ### IJ 14 setup
 Pretty easy actually.  
@@ -23,3 +21,8 @@ Pretty easy actually.
 5. Choose File -> Settings -> Plugins -> Install Plugin from disk..., then select the JAR you downloaded
 6. Restart IJ again.
 7. Ctrl-N to find HelloWorldTest - you should see pretty Gosu syntax highlighting.  Right-click and run the test class.
+
+### Sandbox Environment creation
+To troubleshooting issues with gosu-custom-types-plugin:
+
+The project will use
