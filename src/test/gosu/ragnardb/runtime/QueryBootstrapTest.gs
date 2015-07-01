@@ -41,8 +41,29 @@ class QueryBootstrapTest {
     Assert.assertEquals( "Gross", carson.LastName )
     Assert.assertEquals( 39, carson.Age )
 
-    Assert.assertNull( Contact.where( Contact#FirstName.isEqualTo( "Scott" ) ).first() )
+    Assert.assertNull(Contact.where(Contact#FirstName.isEqualTo("Scott")).first())
   }
+
+  @Test
+  function basicOneContact(){
+
+    new Contact(){
+        :FirstName = "Carson",
+        :LastName = "Gross",
+        :Age = 39
+        }.create()
+
+
+    var carson = Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first()
+
+    Assert.assertEquals( "Carson", carson.FirstName )
+    Assert.assertEquals( "Gross", carson.LastName )
+    Assert.assertEquals( 39, carson.Age )
+
+    Assert.assertEquals( Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first().getLastName() , "Gross" )
+  }
+
+
 
 
   static class Contact extends SQLRecord {
