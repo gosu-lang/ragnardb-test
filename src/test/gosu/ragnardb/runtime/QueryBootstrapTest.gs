@@ -7,6 +7,8 @@ uses org.junit.Before
 uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnardb.RagnarDB
+uses ragnar.foo.Contacts //TODO move to proper test resource folder such as src/test/resources/ragnar/runtime/test/Contacts.ddl
+uses ragnardb.plugin.ISqlDdlType
 
 uses java.lang.Integer
 
@@ -14,14 +16,8 @@ class QueryBootstrapTest {
 
   @BeforeClass
   static function beforeClass(){
-    RagnarDB.setDBUrl( "jdbc:h2:mem:runtimebootstraptest;DB_CLOSE_DELAY=-1" );
-    RagnarDB.execStatement( "CREATE TABLE CONTACTS (\n" +
-        "    id bigint auto_increment,\n" +
-        "    user_id int,\n" +
-        "    first_name nchar(50),\n" +
-        "    last_name nchar(50),\n" +
-        "    age int\n" +
-        ");" )
+    RagnarDB.setDBUrl("jdbc:h2:mem:runtimebootstraptest;DB_CLOSE_DELAY=-1");
+    RagnarDB.execStatement((Contacts as ISqlDdlType).getSqlSource())
   }
 
   @Before
