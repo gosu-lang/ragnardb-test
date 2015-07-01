@@ -44,13 +44,22 @@ class QueryBootstrapTest {
     Assert.assertNull(Contact.where(Contact#FirstName.isEqualTo("Scott")).first())
   }
 
+
+
+
   @Test
-  function basicOneContact(){
+  function basicMultipleContact(){
 
     new Contact(){
         :FirstName = "Carson",
         :LastName = "Gross",
         :Age = 39
+        }.create()
+
+    new Contact(){
+        :FirstName = "Carson",
+        :LastName = "Gross",
+        :Age = 6
         }.create()
 
 
@@ -60,9 +69,7 @@ class QueryBootstrapTest {
     Assert.assertEquals( "Gross", carson.LastName )
     Assert.assertEquals( 39, carson.Age )
 
-    Assert.assertEquals( Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first().getLastName() , "Gross" )
   }
-
 
 
 
