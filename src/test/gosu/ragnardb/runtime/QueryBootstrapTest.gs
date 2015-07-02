@@ -67,6 +67,21 @@ class QueryBootstrapTest {
 //        :Age = 19
 //    }.create()
 //
+    var c = Contacts.Contact.init()
+    c.FirstName = "Kai"
+    c.LastName = "Lu"
+    c.Age = 19
+    c.create()
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random()*100) as int
+      x.create()
+    }
 
 
 //    var names = loadNames()
@@ -83,7 +98,38 @@ class QueryBootstrapTest {
 //    Assert.assertEquals("Lu", kai.LastName)
 //    Assert.assertEquals(19, kai.Age)
 
+    var kai = Contacts.Contact.findByFirstName("Kai")
+    Assert.assertEquals("Kai", kai.FirstName)
+    Assert.assertEquals("Lu", kai.LastName)
+    Assert.assertEquals(19, kai.Age)
 
+    var sarahs = Contacts.Contact.findAllByFirstName("Sarah")
+    for(sarah in sarahs){
+      print(sarah.FirstName + " " + sarah.LastName + ", " + sarah.Age)
+      Assert.assertEquals("Sarah", sarah.FirstName)
+    }
+
+    var methuselah = Contacts.Contact.findByAge(969)
+    if(methuselah != null){
+      print("Damn son, I didn't think people lived that long...")
+      Assert.fail()
+    }
+
+    var lamech = Contacts.Contact.findAllByAge(777)
+    if(lamech.iterator().hasNext()){
+      print("Dammit, I just told you Methuselah wasn't real!")
+      Assert.fail()
+    }
+
+    var kerrs = Contacts.Contact.findAllByLastName("Kerr")
+    for(kerr in kerrs){
+      print(kerr.FirstName + " " + kerr.LastName + ", " + kerr.Age)
+      Assert.assertEquals("Kerr", kerr.LastName)
+      if(kerr.FirstName == "Steve"){
+        print("Wait, didn't you just win an NBA championship?")
+        Assert.fail()
+      }
+    }
   }
 
 
