@@ -106,7 +106,7 @@ class SQLConstraintTest {
   }
 
   @Test
-  function andStatement(){
+  function andorStatement(){
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
@@ -122,6 +122,19 @@ class SQLConstraintTest {
         .andAlso(Contacts.Contact#LastName.isLike("%ther%"))).Count
 
     Assert.assertEquals(oneOfMany,9)
+
+    oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
+        .orElse(Contacts.Contact#FirstName.isEqualTo("Donna"))).Count
+
+    Assert.assertEquals(22,oneOfMany)
+
+    oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
+        .andAlso(Contacts.Contact#LastName.isLike("%ther%"))
+        .orElse(Contacts.Contact#FirstName.isEqualTo("Donna"))).Count
+
+    Assert.assertEquals(18,oneOfMany)
+
+
 
       }
 
