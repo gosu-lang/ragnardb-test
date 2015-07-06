@@ -27,7 +27,7 @@ class SQLConstraintTest {
 
   @Before
   function clearContacts(){
-    RagnarDB.execStatement( "DELETE FROM CONTACTS" );
+    RagnarDB.execStatement("DELETE FROM CONTACTS");
   }
 
 
@@ -47,9 +47,85 @@ class SQLConstraintTest {
     }
 
     var oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isIn({"Cameron","Watson"})).Count
-    Assert.assertEquals(oneOfMany,18)
+    Assert.assertEquals(oneOfMany, 18)
 
   }
+
+  @Test
+  function emptyIsIn() {
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+    var oneOfZero = Contacts.Contact.where(Contacts.Contact#LastName.isIn({})).Count
+    Assert.assertEquals(oneOfZero,0)
+
+  }
+
+  @Test
+  function singleIsIn() {
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+    var oneOfZero = Contacts.Contact.where(Contacts.Contact#LastName.isIn({"Watson"})).Count
+    Assert.assertEquals(oneOfZero,10)
+
+  }
+
+  @Test
+  function basicIsLike() {
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+    var oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")).Count
+    Assert.assertEquals(oneOfMany,13)
+
+  }
+
+  @Test
+  function andStatement(){
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+    var oneOfMany =
+        Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
+        .andAlso(Contacts.Contact#LastName.isLike("%ther%"))).Count
+
+    Assert.assertEquals(oneOfMany,9)
+
+      }
+
+
 
   function loadNames():List<String>{
     var br = new BufferedReader(new FileReader("src/test/resources/names.txt"))
