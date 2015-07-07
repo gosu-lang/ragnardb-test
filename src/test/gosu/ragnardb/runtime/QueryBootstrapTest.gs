@@ -8,7 +8,7 @@ uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnardb.RagnarDB
 uses ragnar.foo.Contacts //TODO move to proper test resource folder such as src/test/resources/ragnar/runtime/test/Contacts.ddl
-uses ragnardb.plugin.ISqlDdlType
+uses ragnardb.plugin.ISQLDdlType
 
 uses java.io.BufferedReader
 uses java.io.FileReader
@@ -20,7 +20,7 @@ class QueryBootstrapTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement((Contacts as ISqlDdlType).getSqlSource())
+    RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
   }
 
   @Before
