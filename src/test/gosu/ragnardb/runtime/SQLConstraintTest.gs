@@ -5,7 +5,6 @@ uses org.junit.Before
 uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnardb.RagnarDB
-uses ragnardb.plugin.ISqlDdlType
 uses ragnar.foo.Contacts
 
 uses java.io.BufferedReader
@@ -22,7 +21,7 @@ class SQLConstraintTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    //RagnarDB.execStatement((Contacts as ISqlDdlType).getSqlSource())
+    //RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
   }
 
   @Before
