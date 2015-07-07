@@ -10,13 +10,16 @@ uses ragnardb.RagnarDB
 uses ragnar.foo.Contacts //TODO move to proper test resource folder such as src/test/resources/ragnar/runtime/test/Contacts.ddl
 uses ragnardb.plugin.ISqlDdlType
 
+uses java.io.BufferedReader
+uses java.io.FileReader
 uses java.lang.Integer
+uses java.lang.Math
 
 class QueryBootstrapTest {
 
   @BeforeClass
   static function beforeClass(){
-    RagnarDB.setDBUrl("jdbc:h2:mem:runtimebootstraptest;DB_CLOSE_DELAY=-1");
+    RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
     RagnarDB.execStatement((Contacts as ISqlDdlType).getSqlSource())
   }
 
@@ -25,81 +28,135 @@ class QueryBootstrapTest {
     RagnarDB.execStatement( "DELETE FROM CONTACTS" );
   }
 
+  function loadNames():List<String>{
+    var br = new BufferedReader(new FileReader("src/test/resources/names.txt"))
+    var x = br.readLine()
+    var strings = {"Sammy Chan"}
+    while(x != null){
+      strings.add(x)
+      x = br.readLine()
+    }
+    return strings
+  }
+
   @Test
   function basicWhereWorks(){
 
-    new Contact(){
-      :FirstName = "Carson",
-      :LastName = "Gross",
-      :Age = 39
-    }.create()
+    var c : Contacts.Contact
+    c = Contacts.Contact.init()
+    c.FirstName = "Kai"
+    c.create()
+
+    var x = Contacts.Contact.findByFirstName('Kai')
+    Assert.assertEquals("Kai", x.FirstName)
+
+//    var carson = Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first()
+//
+//    Assert.assertEquals( "Carson", carson.FirstName )
+//    Assert.assertEquals( "Gross", carson.LastName )
+//    Assert.assertEquals( 39, carson.Age )
+//
+//    Assert.assertNull(Contact.where(Contact#FirstName.isEqualTo("Scott")).first())
+  }
+
+  @Test
+  function basicSelects(){
+//    new Contacts.Contact(){
+//      :FirstName = "Kai",
+//        :LastName = "Lu",
+//        :Age = 19
+//    }.create()
+//
+    var c = Contacts.Contact.init()
+    c.FirstName = "Kai"
+    c.LastName = "Lu"
+    c.Age = 19
+    c.create()
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random()*100) as int
+      x.create()
+    }
 
 
-    var carson = Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first()
+//    var names = loadNames()
+//    for(name in names) {
+//      var x = new Contacts.Contact(){
+//        :FirstName = name.split("[ \\s]")[0],
+//          :LastName = name.split("[ \\s]")[1],
+//          :Age = Math.ceil(Math.random()*100) as int
+//      }.create()
+//    }
 
-    Assert.assertEquals( "Carson", carson.FirstName )
-    Assert.assertEquals( "Gross", carson.LastName )
-    Assert.assertEquals( 39, carson.Age )
+//    var kai = Contacts.Contact.findByFirstName("Kai")
+//    Assert.assertEquals("Kai", kai.FirstName)
+//    Assert.assertEquals("Lu", kai.LastName)
+//    Assert.assertEquals(19, kai.Age)
 
-    Assert.assertNull( Contact.where( Contact#FirstName.isEqualTo( "Scott" ) ).first() )
+    var kai = Contacts.Contact.findByFirstName("Kai")
+    Assert.assertEquals("Kai", kai.FirstName)
+    Assert.assertEquals("Lu", kai.LastName)
+    Assert.assertEquals(19, kai.Age)
+
+    var sarahs = Contacts.Contact.findAllByFirstName("Sarah")
+    for(sarah in sarahs){
+      print(sarah.FirstName + " " + sarah.LastName + ", " + sarah.Age)
+      Assert.assertEquals("Sarah", sarah.FirstName)
+    }
+
+    var methuselah = Contacts.Contact.findByAge(969)
+    if(methuselah != null){
+      print("Damn son, I didn't think people lived that long...")
+      Assert.fail()
+    }
+
+    var lamech = Contacts.Contact.findAllByAge(777)
+    if(lamech.iterator().hasNext()){
+      print("Dammit, I just told you Methuselah wasn't real!")
+      Assert.fail()
+    }
+
+    var kerrs = Contacts.Contact.findAllByLastName("Kerr")
+    for(kerr in kerrs){
+      print(kerr.FirstName + " " + kerr.LastName + ", " + kerr.Age)
+      Assert.assertEquals("Kerr", kerr.LastName)
+      if(kerr.FirstName == "Steve"){
+        print("Wait, didn't you just win an NBA championship?")
+        Assert.fail()
+      }
+    }
   }
 
 
-  static class Contact extends SQLRecord {
-    construct(){
-      super("CONTACTS", "id");
-    }
 
-    // simulate generated methods
-    property get FirstName() : String {
-      return getRawValue( "first_name" ) as String;
-    }
-    property set FirstName(s : String) {
-      setRawValue( "first_name", s );
-    }
-    property get LastName() : String {
-      return getRawValue( "last_name" ) as String;
-    }
-    property set LastName(s : String) {
-      setRawValue( "last_name", s );
-    }
-    property get UserId() : Integer{
-      return getRawValue( "user_id" ) as Integer;
-    }
-    property set UserId(s : Integer) {
-      setRawValue( "user_id", s );
-    }
-    property get Age() : Integer{
-      return getRawValue( "age" ) as Integer;
-    }
-    property set Age(s : Integer) {
-      setRawValue( "age", s );
-    }
-    property get Id() : Integer{
-      return getRawValue( "user_id" ) as Integer;
-    }
 
-    static function where( c: SQLConstraint) : SQLQuery<Contact> {
-      return new SQLQuery<Contact>(new ContactMetadata(), Contact).where(c)
-    }
-  }
-
-  static class ContactMetadata implements ITypeToSQLMetadata {
-    var propertyMap = {
-        "FirstName" -> "first_name",
-        "LastName" -> "last_name",
-        "UserId" -> "user_id",
-        "Age" -> "age",
-        "Id" -> "id"
-    }
-
-    override function getTableForType( type: IType ): String{
-      return "contacts"
-    }
-
-    override function getColumnForProperty( pi: IPropertyInfo ) : String {
-      return propertyMap[pi.Name]
-    }
-  }
+//  @Test
+//  function basicMultipleContact(){
+//
+//    new Contact(){
+//        :FirstName = "Carson",
+//        :LastName = "Gross",
+//        :Age = 39
+//        }.create()
+//
+//    new Contact(){
+//        :FirstName = "Carson",
+//        :LastName = "Gross",
+//        :Age = 6
+//        }.create()
+//
+//
+//    var carson = Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first()
+//
+//    Assert.assertEquals( "Carson", carson.FirstName )
+//    Assert.assertEquals( "Gross", carson.LastName )
+//    Assert.assertEquals( 39, carson.Age )
+//
+//  }
 
 }

@@ -12,3 +12,4 @@ CREATE TABLE SCOTTS (
     FirstName nchar(50),
     LastName nchar(50)
 );
+
