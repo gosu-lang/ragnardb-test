@@ -107,9 +107,7 @@ class SQLConstraintTest {
     //Example.Contact.select().join(Example.Contact.
 
   }
-  function test(){
 
-  }
   @Test
   function andorStatement(){
     var names = loadNames()
