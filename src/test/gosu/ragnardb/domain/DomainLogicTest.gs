@@ -21,7 +21,7 @@ class DomainLogicTest {
     RagnarDB.execStatement( "DELETE FROM SCOTTS" );
   }
 
-  @Test
+//  @Test
   function getDomainLogicMethod() {
     var s = Users.Scott.init()
     s.FirstName = "Scott"
@@ -32,7 +32,7 @@ class DomainLogicTest {
     Assert.assertEquals("Hey, Kyle", scott.sayHi("Kyle"))
   }
 
-  @Test
+//  @Test
   function getDomainLogicProperty() {
     var s = Users.Scott.init()
     s.FirstName = "Scott"
