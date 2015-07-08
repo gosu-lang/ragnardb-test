@@ -21,7 +21,7 @@ class SQLConstraintTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    //RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
+    //RagnarDB.execStatement((Example as ISqlDdlType).getSqlSource())
   }
 
   @Before
@@ -47,6 +47,8 @@ class SQLConstraintTest {
 
     var oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isIn({"Cameron","Watson"})).Count
     Assert.assertEquals(oneOfMany, 18)
+
+
 
   }
 
@@ -84,6 +86,7 @@ class SQLConstraintTest {
     var oneOfZero = Contacts.Contact.where(Contacts.Contact#LastName.isIn({"Watson"})).Count
     Assert.assertEquals(oneOfZero,10)
 
+
   }
 
   @Test
@@ -98,12 +101,15 @@ class SQLConstraintTest {
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
-
     var oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")).Count
     Assert.assertEquals(oneOfMany,13)
 
-  }
+    //Example.Contact.select().join(Example.Contact.
 
+  }
+  function test(){
+
+  }
   @Test
   function andorStatement(){
     var names = loadNames()
@@ -115,6 +121,11 @@ class SQLConstraintTest {
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
+
+
+    var result = Contacts.Contact.select().join(Contacts.Contact)
+
+
 
     var oneOfMany =
         Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
@@ -137,9 +148,42 @@ class SQLConstraintTest {
 
       }
 
+  @Test
+  function JoinStatement() {
+    var names = loadNames()
+    for (name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.StateId = 1 //Checking doubling effect for joins
+      x.create()
+
+    }
+
+    var z = Contacts.State.init()
+    z.Id = 1;
+    z.Name = "NC"
+    z.create()
+    z = Contacts.State.init()
+    z.Id = 1;
+    z.Name = "NY"
+    z.create()
 
 
-  function loadNames():List<String>{
+
+
+
+    var result = Contacts.Contact.select().join(Contacts.State).Count
+
+
+    Assert.assertEquals(2002,result)
+  }
+
+
+
+    function loadNames():List<String>{
     var br = new BufferedReader(new FileReader("src/test/resources/names.txt"))
     var x = br.readLine()
     var strings = {"Sammy Chan"}
