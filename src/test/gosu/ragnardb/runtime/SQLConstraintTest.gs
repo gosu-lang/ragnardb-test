@@ -6,6 +6,7 @@ uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnardb.RagnarDB
 uses ragnar.foo.Contacts
+uses ragnardb.plugin.ISQLDdlType
 
 uses java.io.BufferedReader
 uses java.io.FileReader
@@ -16,21 +17,16 @@ uses java.lang.Math
  */
 class SQLConstraintTest {
 
-
-
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    //RagnarDB.execStatement((Example as ISqlDdlType).getSqlSource())
+    RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
   }
 
   @Before
   function clearContacts(){
     RagnarDB.execStatement("DELETE FROM CONTACTS");
   }
-
-
-
 
   @Test
   function basicIsIn() {
@@ -122,8 +118,6 @@ class SQLConstraintTest {
 
 
     var result = Contacts.Contact.select().join(Contacts.Contact)
-
-
 
     var oneOfMany =
         Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
