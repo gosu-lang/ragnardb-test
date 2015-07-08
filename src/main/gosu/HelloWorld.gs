@@ -14,12 +14,12 @@ class HelloWorld {
 
 
 
-    //TODO Contacts#Age exists?
+    //TODO Example#Age exists?
     var x : Users.Contact
     var y : Users.Scott
 
 
-//    x = Users.Contacts.get().where( \ c -> c.firstName == "carson")
+//    x = Users.Example.get().where( \ c -> c.firstName == "carson")
 
     print(y.FirstName)
 
