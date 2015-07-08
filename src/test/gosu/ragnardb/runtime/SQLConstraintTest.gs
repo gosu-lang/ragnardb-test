@@ -173,7 +173,9 @@ class SQLConstraintTest {
 
 
 
-    var result = Contacts.Contact.select().join(Contacts.State).Count
+    var result = Contacts.Contact.select().crossJoin(Contacts.State).Count
+    result = Contacts.Contact.select().innerJoin(Contacts.State).Count
+    result = Contacts.Contact.select().join(Contacts.State).Count
 
 
     Assert.assertEquals(2002,result)
