@@ -20,7 +20,7 @@ class SQLConstraintTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
+    //RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
   }
 
   @Before
@@ -170,6 +170,21 @@ class SQLConstraintTest {
         .on(Contacts.Contact#StateId.isEqualTo(Contacts.State#Id))
         .Count
 
+    //Just checking for successful query execution
+    /*
+    result = Contacts.Contact.select().leftJoin(Contacts.State)
+        .on(Contacts.Contact#StateId.isEqualTo(Contacts.State#Id))
+        .Count
+
+    result = Contacts.Contact.select().rightJoin(Contacts.State)
+        .on(Contacts.Contact#StateId.isEqualTo(Contacts.State#Id))
+        .Count
+
+    result = Contacts.Contact.select().leftOuterJoin(Contacts.State)
+        .on(Contacts.Contact#StateId.isEqualTo(Contacts.State#Id))
+        .Count
+
+    */
 
     //Assert.assertEquals(2002,result)
   }
