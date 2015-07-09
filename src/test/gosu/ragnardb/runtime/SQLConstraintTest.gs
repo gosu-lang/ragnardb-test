@@ -64,6 +64,8 @@ class SQLConstraintTest {
     var oneOfZero = Contacts.Contact.where(Contacts.Contact#LastName.isIn({})).Count
     Assert.assertEquals(oneOfZero,0)
 
+
+
   }
 
   @Test
@@ -187,6 +189,48 @@ class SQLConstraintTest {
     */
 
     //Assert.assertEquals(2002,result)
+  }
+
+  @Test
+  function fullComparatorTest() {
+
+    var names = loadNames()
+    var count = 1
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = Contacts.Contact.init()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Id = count
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+      count = count + 1
+    }
+
+    var oneOfMany = Contacts.Contact.where(
+        Contacts.Contact#Id.isNotEqualTo(10)).Count
+    Assert.assertEquals(oneOfMany, 1000)
+
+    oneOfMany = Contacts.Contact.where(
+        Contacts.Contact#Id.isGreaterThan(2)).Count
+    Assert.assertEquals(oneOfMany, 999)
+
+    oneOfMany = Contacts.Contact.where(
+        Contacts.Contact#Id.isGreaterOrEqual(2)).Count
+    Assert.assertEquals(oneOfMany, 1000)
+
+    oneOfMany = Contacts.Contact.where(
+        Contacts.Contact#Id.isLessThan(2)).Count
+    Assert.assertEquals(oneOfMany, 1)
+
+    oneOfMany = Contacts.Contact.where(
+        Contacts.Contact#Id.isLessOrEqual(2)).Count
+    Assert.assertEquals(oneOfMany, 2)
+
+
+
+
+
   }
 
 
