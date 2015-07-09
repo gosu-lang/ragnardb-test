@@ -1,0 +1,1 @@
+SELECT * FROM Contacts WHERE age > @age:java.lang.Integer;

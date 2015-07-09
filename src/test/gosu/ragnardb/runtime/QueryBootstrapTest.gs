@@ -9,6 +9,8 @@ uses org.junit.Test
 uses ragnardb.RagnarDB
 uses ragnar.foo.Contacts //TODO move to proper test resource folder such as src/test/resources/ragnar/runtime/test/Contacts.ddl
 uses ragnardb.plugin.ISQLDdlType
+uses ragnar.foo.myQuery
+uses ragnardb.plugin.ISQLQueryType
 
 uses java.io.BufferedReader
 uses java.io.FileReader
@@ -37,6 +39,12 @@ class QueryBootstrapTest {
       x = br.readLine()
     }
     return strings
+  }
+
+  @Test
+  function basicSelectWorks(){
+    var c = myQuery.execute(3)
+    Assert.assertNotNull(c);
   }
 
   @Test
