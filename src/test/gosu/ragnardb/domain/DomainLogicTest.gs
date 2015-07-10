@@ -21,20 +21,20 @@ class DomainLogicTest {
     RagnarDB.execStatement( "DELETE FROM SCOTTS" );
   }
 
-//  @Test
+  @Test
   function getDomainLogicMethod() {
-    var s = Users.Scott.init()
+    var s = new Users.Scott()
     s.FirstName = "Scott"
     s.create()
 
     var scott = Users.Scott.where(Users.Scott#FirstName.isEqualTo("Scott")).first()
     Assert.assertNotNull(scott)
-    Assert.assertEquals("Hey, Kyle", scott.sayHi("Kyle"))
+    Assert.assertEquals("Hi, Kyle", scott.sayHi("Kyle"))
   }
 
-//  @Test
+  @Test
   function getDomainLogicProperty() {
-    var s = Users.Scott.init()
+    var s = new Users.Scott()
     s.FirstName = "Scott"
     s.create()
 

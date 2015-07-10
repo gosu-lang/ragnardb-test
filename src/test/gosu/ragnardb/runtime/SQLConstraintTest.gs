@@ -1,5 +1,7 @@
 package ragnardb.runtime
 
+uses gw.lang.reflect.IPropertyInfo
+uses gw.lang.reflect.features.IPropertyReference
 uses org.junit.Assert
 uses org.junit.Before
 uses org.junit.BeforeClass
@@ -20,7 +22,7 @@ class SQLConstraintTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    //RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
+    RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
   }
 
   @Before
@@ -34,7 +36,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -54,7 +56,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -74,7 +76,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -93,7 +95,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -111,7 +113,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -147,7 +149,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for (name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -156,11 +158,11 @@ class SQLConstraintTest {
 
     }
 
-    var z = Contacts.State.init()
+    var z = new Contacts.State()
     z.Id = 1;
     z.Name = "NC"
     z.create()
-    z = Contacts.State.init()
+    z = new Contacts.State()
     z.Id = 1;
     z.Name = "NY"
     z.create()
@@ -168,6 +170,7 @@ class SQLConstraintTest {
 
     var result = Contacts.Contact.select().crossJoin(Contacts.State).Count
     result = Contacts.Contact.select().innerJoin(Contacts.State).Count
+
     result = Contacts.Contact.select().join(Contacts.State)
         .on(Contacts.Contact#StateId.isEqualTo(Contacts.State#Id))
         .Count
@@ -198,7 +201,7 @@ class SQLConstraintTest {
     var count = 1
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Id = count

@@ -1,6 +1,12 @@
 package ragnar.foo.UserExtensions
 
-class ScottExt {
+uses ragnardb.runtime.SQLRecord
+
+class ScottExt extends SQLRecord {
+
+  construct(table:String, id:String) {
+    super(table, id)
+  }
 
   public function sayHi(arg : String) : String {
     return("Hi, ${arg}")
