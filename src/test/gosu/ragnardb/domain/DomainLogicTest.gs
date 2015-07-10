@@ -1,9 +1,6 @@
 package ragnardb.domain
 
-uses org.junit.Assert
-uses org.junit.Before
-uses org.junit.BeforeClass
-uses org.junit.Test
+uses org.junit.*
 uses ragnar.foo.Users
 uses ragnardb.RagnarDB
 uses ragnardb.plugin.ISQLDdlType
@@ -21,20 +18,21 @@ class DomainLogicTest {
     RagnarDB.execStatement( "DELETE FROM SCOTTS" );
   }
 
-//  @Test
+  @Test
   function getDomainLogicMethod() {
-    var s = Users.Scott.init()
+    var s = new Users.Scott()
     s.FirstName = "Scott"
     s.create()
 
     var scott = Users.Scott.where(Users.Scott#FirstName.isEqualTo("Scott")).first()
     Assert.assertNotNull(scott)
-    Assert.assertEquals("Hey, Kyle", scott.sayHi("Kyle"))
+    Assert.assertEquals("Hi, Kyle", scott.sayHi("Kyle"))
   }
 
-//  @Test
+  @Test
+  @Ignore
   function getDomainLogicProperty() {
-    var s = Users.Scott.init()
+    var s = new Users.Scott()
     s.FirstName = "Scott"
     s.create()
 
