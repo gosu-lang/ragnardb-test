@@ -45,9 +45,6 @@ class SQLConstraintTest {
 
     var oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isIn({"Cameron","Watson"})).Count
     Assert.assertEquals(oneOfMany, 18)
-
-
-
   }
 
   @Test

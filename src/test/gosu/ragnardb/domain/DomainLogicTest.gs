@@ -33,6 +33,14 @@ class DomainLogicTest {
   }
 
   @Test
+  function selfReferenceWorks() {
+    var scott = new Users.Scott() {
+      :FirstName = "Scott"
+    }
+    Assert.assertEquals("Hi, Scott", scott.sayHiToSelf())
+  }
+
+  @Test
   function getDomainLogicProperty() {
     var s = new Users.Scott()
     s.FirstName = "Scott"
