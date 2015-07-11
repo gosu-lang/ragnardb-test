@@ -51,7 +51,7 @@ class QueryBootstrapTest {
   function basicWhereWorks(){
 
     var c : Contacts.Contact
-    c = Contacts.Contact.init()
+    c = new Contacts.Contact()
     c.FirstName = "Kai"
     c.create()
 
@@ -75,7 +75,7 @@ class QueryBootstrapTest {
 //        :Age = 19
 //    }.create()
 //
-    var c = Contacts.Contact.init()
+    var c = new Contacts.Contact()
     c.FirstName = "Kai"
     c.LastName = "Lu"
     c.Age = 19
@@ -84,7 +84,7 @@ class QueryBootstrapTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = Contacts.Contact.init()
+      var x = new Contacts.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random()*100) as int

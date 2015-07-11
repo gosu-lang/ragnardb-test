@@ -1,6 +1,9 @@
 package ragnardb.domain
 
-uses org.junit.*
+uses org.junit.Assert
+uses org.junit.Before
+uses org.junit.BeforeClass
+uses org.junit.Test
 uses ragnar.foo.Users
 uses ragnardb.RagnarDB
 uses ragnardb.plugin.ISQLDdlType
@@ -30,7 +33,6 @@ class DomainLogicTest {
   }
 
   @Test
-  @Ignore
   function getDomainLogicProperty() {
     var s = new Users.Scott()
     s.FirstName = "Scott"

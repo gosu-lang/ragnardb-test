@@ -4,11 +4,11 @@ uses ragnardb.runtime.SQLRecord
 
 class ScottExt extends SQLRecord {
 
-  construct(tableName : String, idColumn : String) {
-    super(tableName, idColumn)
+  construct(table:String, id:String) {
+    super(table, id)
   }
 
-  function sayHi(arg : String) : String {
+  public function sayHi(arg : String) : String {
     return("Hi, ${arg}")
   }
 
