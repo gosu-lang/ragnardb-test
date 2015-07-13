@@ -17,8 +17,8 @@ class DomainLogicTest {
   }
 
   @Before
-  function clearContacts(){
-    RagnarDB.execStatement( "DELETE FROM SCOTTS" );
+  function clearDomainDB(){
+    Domain.Tables.each(\t -> t.deleteAll(true))
   }
 
   @Test

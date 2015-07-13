@@ -27,9 +27,7 @@ class QueryBootstrapTest {
 
   @Before
   function clearMain(){
-    RagnarDB.execStatement( "DELETE FROM CONTACTS" );
-    RagnarDB.execStatement( "DELETE FROM STATES" );
-    RagnarDB.execStatement( "DELETE FROM COMPANY" );
+    Main.Tables.each(\t -> t.deleteAll(true))
   }
 
   function loadNames():List<String>{
