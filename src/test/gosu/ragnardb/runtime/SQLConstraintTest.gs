@@ -21,7 +21,7 @@ class SQLConstraintTest {
 
   @BeforeClass
   static function beforeClass(){
-    RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
+    RagnarDB.setDBUrl("jdbc:h2:mem:sqlconstrainttest;DB_CLOSE_DELAY=-1");
     RagnarDB.execStatement((Contacts as ISQLDdlType).getSqlSource())
   }
 
