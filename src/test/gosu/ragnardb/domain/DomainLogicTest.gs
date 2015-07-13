@@ -13,12 +13,12 @@ class DomainLogicTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:domainlogictest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement((Domain as ISQLDdlType).getSqlSource())
+    RagnarDB.execStatement(Domain.SqlSource)
   }
 
   @Before
-  function clearContacts(){
-    RagnarDB.execStatement( "DELETE FROM SCOTTS" );
+  function clearDomainDB(){
+    Domain.Tables.each(\t -> t.deleteAll(true))
   }
 
   @Test

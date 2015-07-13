@@ -22,12 +22,12 @@ class SQLConstraintTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:sqlconstrainttest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement((Main as ISQLDdlType).getSqlSource())
+    RagnarDB.execStatement(Main.SqlSource)
   }
 
   @Before
   function clearMain(){
-    RagnarDB.execStatement("DELETE FROM Contacts");
+    Main.Tables.each(\t -> t.deleteAll(true))
   }
 
 
@@ -127,14 +127,6 @@ class SQLConstraintTest {
         .andAlso(Main.Contact#LastName.isLike("%ther%"))).Count
 
     Assert.assertEquals(oneOfMany,9)
-
-    oneOfMany =
-        Main.Contact.select().where(Main.Contact#LastName.isLike("%land%"))
-            .where(Main.Contact#LastName.isLike("%ther%")).Count
-
-    Assert.assertEquals(oneOfMany,9)
-
-
 
     oneOfMany = Main.Contact.where(Main.Contact#LastName.isLike("%land%")
         .orElse(Main.Contact#FirstName.isEqualTo("Donna"))).Count
@@ -240,62 +232,6 @@ class SQLConstraintTest {
 
 
 
-
-  }
-
-
-  @Test
-  function pickTest() {
-    var names = loadNames()
-    for(name in names) {
-      var y = name.split("[ \t]")
-      var x = new Main.Contact()
-      x.FirstName = y[0]
-      x.LastName = y[1]
-      x.Age = Math.ceil(Math.random() * 100) as int
-      x.create()
-    }
-
-    var oneOfMany = Main.Contact.select()
-        .where(Main.Contact#LastName.isLike("%land%"))
-        .pick(Main.Contact#FirstName)
-
-    var x = oneOfMany.iterator()
-
-
-    Assert.assertEquals(13,13)
-
-    //Example.Contact.select().join(Example.Contact.
-
-  }
-
-  @Test
-  function subQueryTest() {
-    var names = loadNames()
-    var count = 1
-    for(name in names) {
-      var y = name.split("[ \t]")
-      var x = new Main.Contact()
-      x.FirstName = y[0]
-      x.LastName = y[1]
-      x.Id = count
-      x.Age = Math.ceil(Math.random() * 100) as int
-      x.create()
-      count = count + 1
-    }
-    var oneOfMany = Main.Contact.select()
-        .where(Main.Contact#LastName.isInQuery(
-            Main.Contact.select().where(Main.Contact#Id.isIn({1,2,3})).pick(Main.Contact#LastName)
-        )
-        ).Count
-
-
-    //  var x = oneOfMany.iterator()
-
-
-    Assert.assertEquals(oneOfMany, 16)
-
-    //Example.Contact.select().join(Example.Contact.
 
   }
 
