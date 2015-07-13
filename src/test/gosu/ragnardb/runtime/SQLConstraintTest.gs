@@ -27,7 +27,9 @@ class SQLConstraintTest {
 
   @Before
   function clearMain(){
-    RagnarDB.execStatement("DELETE FROM Main");
+    RagnarDB.execStatement( "DELETE FROM CONTACTS" );
+    RagnarDB.execStatement( "DELETE FROM STATES" );
+    RagnarDB.execStatement( "DELETE FROM COMPANY" );
   }
 
   @Test

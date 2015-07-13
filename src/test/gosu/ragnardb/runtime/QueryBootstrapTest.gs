@@ -22,12 +22,14 @@ class QueryBootstrapTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement(Main .SqlSource)
+    RagnarDB.execStatement(Main.SqlSource)
   }
 
   @Before
   function clearMain(){
-    RagnarDB.execStatement( "DELETE FROM Main" );
+    RagnarDB.execStatement( "DELETE FROM CONTACTS" );
+    RagnarDB.execStatement( "DELETE FROM STATES" );
+    RagnarDB.execStatement( "DELETE FROM COMPANY" );
   }
 
   function loadNames():List<String>{
