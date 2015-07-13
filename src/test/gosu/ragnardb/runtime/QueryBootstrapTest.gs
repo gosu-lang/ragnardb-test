@@ -22,7 +22,7 @@ class QueryBootstrapTest {
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:querystraptest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement((Main as ISQLDdlType).getSqlSource())
+    RagnarDB.execStatement(Main .SqlSource)
   }
 
   @Before
