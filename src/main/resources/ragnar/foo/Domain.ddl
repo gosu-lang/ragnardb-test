@@ -4,7 +4,7 @@ CREATE TABLE CONTACTS (
     FirstName nchar(50),
     LastName nchar(50),
     Age int
-    -- TODO add Gender
+    -- TODO add sex
 );
 
 CREATE TABLE SCOTTS (

@@ -1,4 +1,5 @@
-uses ragnar.foo.Users
+uses ragnar.foo.Main
+uses ragnar.foo.Domain
 
 class HelloWorld {
 
@@ -15,11 +16,11 @@ class HelloWorld {
 
 
     //TODO Example#Age exists?
-    var x : Users.Contact
-    var y : Users.Scott
+    var x : Main.Contact
+    var y : Domain.Scott
 
 
-//    x = Users.Example.get().where( \ c -> c.firstName == "carson")
+//    x = Main.Example.get().where( \ c -> c.firstName == "carson")
 
     print(y.FirstName)
 
