@@ -126,6 +126,14 @@ class SQLConstraintTest {
 
     Assert.assertEquals(oneOfMany,9)
 
+    oneOfMany =
+        Contacts.Contact.select().where(Contacts.Contact#LastName.isLike("%land%"))
+            .where(Contacts.Contact#LastName.isLike("%ther%")).Count
+
+    Assert.assertEquals(oneOfMany,9)
+
+
+
     oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
         .orElse(Contacts.Contact#FirstName.isEqualTo("Donna"))).Count
 
@@ -230,6 +238,62 @@ class SQLConstraintTest {
 
 
 
+
+  }
+
+
+  @Test
+  function pickTest() {
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = new Contacts.Contact()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+    var oneOfMany = Contacts.Contact.select()
+        .where(Contacts.Contact#LastName.isLike("%land%"))
+        .pick(Contacts.Contact#FirstName)
+
+    var x = oneOfMany.iterator()
+
+
+    Assert.assertEquals(13,13)
+
+    //Example.Contact.select().join(Example.Contact.
+
+  }
+
+  @Test
+  function subQueryTest() {
+    var names = loadNames()
+    var count = 1
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = new Contacts.Contact()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Id = count
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+      count = count + 1
+    }
+    var oneOfMany = Contacts.Contact.select()
+        .where(Contacts.Contact#LastName.isInQuery(
+            Contacts.Contact.select().where(Contacts.Contact#Id.isIn({1,2,3})).pick(Contacts.Contact#LastName)
+        )
+        ).Count
+
+
+    //  var x = oneOfMany.iterator()
+
+
+    Assert.assertEquals(oneOfMany, 16)
+
+    //Example.Contact.select().join(Example.Contact.
 
   }
 
