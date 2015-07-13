@@ -27,7 +27,7 @@ class QueryBootstrapTest {
 
   @Before
   function clearMain(){
-    RagnarDB.execStatement( "DELETE FROM Main" );
+    RagnarDB.execStatement( "DELETE FROM Contacts" );
   }
 
   function loadNames():List<String>{

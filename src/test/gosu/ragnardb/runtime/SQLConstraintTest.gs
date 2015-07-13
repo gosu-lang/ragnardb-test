@@ -27,8 +27,10 @@ class SQLConstraintTest {
 
   @Before
   function clearMain(){
-    RagnarDB.execStatement("DELETE FROM Main");
+    RagnarDB.execStatement("DELETE FROM Contacts");
   }
+
+
 
   @Test
   function basicIsIn() {
@@ -127,15 +129,15 @@ class SQLConstraintTest {
     Assert.assertEquals(oneOfMany,9)
 
     oneOfMany =
-        Contacts.Contact.select().where(Contacts.Contact#LastName.isLike("%land%"))
-            .where(Contacts.Contact#LastName.isLike("%ther%")).Count
+        Main.Contact.select().where(Main.Contact#LastName.isLike("%land%"))
+            .where(Main.Contact#LastName.isLike("%ther%")).Count
 
     Assert.assertEquals(oneOfMany,9)
 
 
 
-    oneOfMany = Contacts.Contact.where(Contacts.Contact#LastName.isLike("%land%")
-        .orElse(Contacts.Contact#FirstName.isEqualTo("Donna"))).Count
+    oneOfMany = Main.Contact.where(Main.Contact#LastName.isLike("%land%")
+        .orElse(Main.Contact#FirstName.isEqualTo("Donna"))).Count
 
     Assert.assertEquals(22,oneOfMany)
 
@@ -247,16 +249,16 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Contacts.Contact()
+      var x = new Main.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
 
-    var oneOfMany = Contacts.Contact.select()
-        .where(Contacts.Contact#LastName.isLike("%land%"))
-        .pick(Contacts.Contact#FirstName)
+    var oneOfMany = Main.Contact.select()
+        .where(Main.Contact#LastName.isLike("%land%"))
+        .pick(Main.Contact#FirstName)
 
     var x = oneOfMany.iterator()
 
@@ -273,7 +275,7 @@ class SQLConstraintTest {
     var count = 1
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Contacts.Contact()
+      var x = new Main.Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Id = count
@@ -281,9 +283,9 @@ class SQLConstraintTest {
       x.create()
       count = count + 1
     }
-    var oneOfMany = Contacts.Contact.select()
-        .where(Contacts.Contact#LastName.isInQuery(
-            Contacts.Contact.select().where(Contacts.Contact#Id.isIn({1,2,3})).pick(Contacts.Contact#LastName)
+    var oneOfMany = Main.Contact.select()
+        .where(Main.Contact#LastName.isInQuery(
+            Main.Contact.select().where(Main.Contact#Id.isIn({1,2,3})).pick(Main.Contact#LastName)
         )
         ).Count
 
