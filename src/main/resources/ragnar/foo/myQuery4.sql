@@ -1,0 +1,1 @@
+SELECT age, last_name FROM CONTACTS WHERE first_name = 'Kai';
