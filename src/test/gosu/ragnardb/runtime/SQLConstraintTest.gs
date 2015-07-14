@@ -174,6 +174,12 @@ class SQLConstraintTest {
         .on(Main.Contact#StateId.isEqualTo(Main.State#Id))
         .Count
 
+    result = Main.Contact.select().join(Main.State)
+        .on(Main.Contact#StateId.isEqualTo(Main.State#Id))
+        .join(Main.Company)
+        .on(Main.Contact#LastName.isEqualTo(Main.Company#Name))
+        .Count
+
     //Just checking for successful query execution
     /*
     result = Main.Contact.select().leftJoin(Main.State)
@@ -231,6 +237,33 @@ class SQLConstraintTest {
 
 
 
+
+
+  }
+
+
+  @Test
+  function TestOrderBy() {
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = new Main.Contact()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+
+    var oneOfMany = Main.Contact.select().where(Main.Contact#LastName.isLike("%land%"))
+        .orderBy({Main.Contact#Id.asc(), Main.Contact#StateId.desc()})
+
+
+
+    Assert.assertEquals(oneOfMany.Count,13)
+
+    //Example.Contact.select().join(Example.Contact.
 
 
   }
