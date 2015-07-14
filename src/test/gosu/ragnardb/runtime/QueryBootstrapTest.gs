@@ -8,6 +8,7 @@ uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnardb.RagnarDB
 uses ragnar.foo.Main //TODO move to proper test resource folder such as src/test/resources/ragnar/runtime/test/MainModel.ddl
+uses ragnar.foo.Main.*
 uses ragnardb.plugin.ISQLDdlType
 uses ragnar.foo.ContactsOlderThan
 uses ragnar.foo.myQuery2
@@ -55,12 +56,12 @@ class QueryBootstrapTest {
   @Test
   function basicWhereWorks(){
 
-    var c : Main.Contact
-    c = new Main.Contact()
+    var c : Contact
+    c = new Contact()
     c.FirstName = "Kai"
     c.create()
 
-    var x = Main.Contact.findByFirstName('Kai')
+    var x = Contact.findByFirstName('Kai')
     Assert.assertEquals("Kai", x.FirstName)
 
 //    var carson = Contact.where( Contact#FirstName.isEqualTo( "Carson" ) ).first()
@@ -74,13 +75,13 @@ class QueryBootstrapTest {
 
   @Test
   function basicSelects(){
-//    new Main.Contact(){
+//    new Contact(){
 //      :FirstName = "Kai",
 //        :LastName = "Lu",
 //        :Age = 19
 //    }.create()
 //
-    var c = new Main.Contact()
+    var c = new Contact()
     c.FirstName = "Kai"
     c.LastName = "Lu"
     c.Age = 19
@@ -89,7 +90,7 @@ class QueryBootstrapTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random()*100) as int
@@ -99,42 +100,42 @@ class QueryBootstrapTest {
 
 //    var names = loadNames()
 //    for(name in names) {
-//      var x = new Main.Contact(){
+//      var x = new Contact(){
 //        :FirstName = name.split("[ \\s]")[0],
 //          :LastName = name.split("[ \\s]")[1],
 //          :Age = Math.ceil(Math.random()*100) as int
 //      }.create()
 //    }
 
-//    var kai = Main.Contact.findByFirstName("Kai")
+//    var kai = Contact.findByFirstName("Kai")
 //    Assert.assertEquals("Kai", kai.FirstName)
 //    Assert.assertEquals("Lu", kai.LastName)
 //    Assert.assertEquals(19, kai.Age)
 
-    var kai = Main.Contact.findByFirstName("Kai")
+    var kai = Contact.findByFirstName("Kai")
     Assert.assertEquals("Kai", kai.FirstName)
     Assert.assertEquals("Lu", kai.LastName)
     Assert.assertEquals(19, kai.Age)
 
-    var sarahs = Main.Contact.findAllByFirstName("Sarah")
+    var sarahs = Contact.findAllByFirstName("Sarah")
     for(sarah in sarahs){
       print(sarah.FirstName + " " + sarah.LastName + ", " + sarah.Age)
       Assert.assertEquals("Sarah", sarah.FirstName)
     }
 
-    var methuselah = Main.Contact.findByAge(969)
+    var methuselah = Contact.findByAge(969)
     if(methuselah != null){
       print("Damn son, I didn't think people lived that long...")
       Assert.fail()
     }
 
-    var lamech = Main.Contact.findAllByAge(777)
+    var lamech = Contact.findAllByAge(777)
     if(lamech.iterator().hasNext()){
       print("Dammit, I just told you Methuselah wasn't real!")
       Assert.fail()
     }
 
-    var kerrs = Main.Contact.findAllByLastName("Kerr")
+    var kerrs = Contact.findAllByLastName("Kerr")
     for(kerr in kerrs){
       print(kerr.FirstName + " " + kerr.LastName + ", " + kerr.Age)
       Assert.assertEquals("Kerr", kerr.LastName)

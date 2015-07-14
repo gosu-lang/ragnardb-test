@@ -5,6 +5,7 @@ uses org.junit.Before
 uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnar.foo.Domain
+uses ragnar.foo.Domain.*
 uses ragnardb.RagnarDB
 uses ragnardb.plugin.ISQLDdlType
 
@@ -27,14 +28,14 @@ class DomainLogicTest {
     s.FirstName = "Scott"
     s.create()
 
-    var scott = Domain.Scott.where(Domain.Scott#FirstName.isEqualTo("Scott")).first()
+    var scott = Scott.where(Scott#FirstName.isEqualTo("Scott")).first()
     Assert.assertNotNull(scott)
     Assert.assertEquals("Hi, Kyle", scott.sayHi("Kyle"))
   }
 
   @Test
   function selfReferenceWorks() {
-    var scott = new Domain.Scott() {
+    var scott = new Scott() {
       :FirstName = "Scott"
     }
 
@@ -43,11 +44,11 @@ class DomainLogicTest {
 
   @Test
   function getDomainLogicProperty() {
-    var s = new Domain.Scott()
+    var s = new Scott()
     s.FirstName = "Scott"
     s.create()
 
-    var scott = Domain.Scott.where(Domain.Scott#FirstName.isEqualTo("Scott")).first()
+    var scott = Scott.where(Scott#FirstName.isEqualTo("Scott")).first()
     Assert.assertNotNull(scott)
     Assert.assertEquals(42, scott.MeaningOfLife)
   }

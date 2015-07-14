@@ -8,6 +8,7 @@ uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnardb.RagnarDB
 uses ragnar.foo.Main
+uses ragnar.foo.Main.*
 uses ragnardb.plugin.ISQLDdlType
 
 uses java.io.BufferedReader
@@ -38,14 +39,14 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
 
-    var oneOfMany = Main.Contact.where(Main.Contact#LastName.isIn({"Cameron","Watson"})).Count
+    var oneOfMany = Contact.where(Main.Contact#LastName.isIn({"Cameron","Watson"})).Count
     Assert.assertEquals(oneOfMany, 18)
   }
 
@@ -55,14 +56,14 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
 
-    var oneOfZero = Main.Contact.where(Main.Contact#LastName.isIn({})).Count
+    var oneOfZero = Contact.where(Contact#LastName.isIn({})).Count
     Assert.assertEquals(oneOfZero,0)
 
 
@@ -75,14 +76,14 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
 
-    var oneOfZero = Main.Contact.where(Main.Contact#LastName.isIn({"Watson"})).Count
+    var oneOfZero = Contact.where(Contact#LastName.isIn({"Watson"})).Count
     Assert.assertEquals(oneOfZero,10)
 
 
@@ -94,13 +95,13 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
       x.create()
     }
-    var oneOfMany = Main.Contact.where(Main.Contact#LastName.isLike("%land%")).Count
+    var oneOfMany = Contact.where(Contact#LastName.isLike("%land%")).Count
     Assert.assertEquals(oneOfMany,13)
 
     //Example.Contact.select().join(Example.Contact.
@@ -112,7 +113,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -120,22 +121,22 @@ class SQLConstraintTest {
     }
 
 
-    //var result = Main.Contact.select().join(Main.Contact)
+    //var result = Contact.select().join(Contact)
 
     var oneOfMany =
-        Main.Contact.where(Main.Contact#LastName.isLike("%land%")
-        .andAlso(Main.Contact#LastName.isLike("%ther%"))).Count
+        Contact.where(Contact#LastName.isLike("%land%")
+        .andAlso(Contact#LastName.isLike("%ther%"))).Count
 
     Assert.assertEquals(oneOfMany,9)
 
-    oneOfMany = Main.Contact.where(Main.Contact#LastName.isLike("%land%")
-        .orElse(Main.Contact#FirstName.isEqualTo("Donna"))).Count
+    oneOfMany = Contact.where(Contact#LastName.isLike("%land%")
+        .orElse(Contact#FirstName.isEqualTo("Donna"))).Count
 
     Assert.assertEquals(22,oneOfMany)
 
-    oneOfMany = Main.Contact.where(Main.Contact#LastName.isLike("%land%")
-        .andAlso(Main.Contact#LastName.isLike("%ther%"))
-        .orElse(Main.Contact#FirstName.isEqualTo("Donna"))).Count
+    oneOfMany = Contact.where(Contact#LastName.isLike("%land%")
+        .andAlso(Contact#LastName.isLike("%ther%"))
+        .orElse(Contact#FirstName.isEqualTo("Donna"))).Count
 
     Assert.assertEquals(18,oneOfMany)
 
@@ -148,7 +149,7 @@ class SQLConstraintTest {
     var names = loadNames()
     for (name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Age = Math.ceil(Math.random() * 100) as int
@@ -167,11 +168,11 @@ class SQLConstraintTest {
     z.create()
 
 
-    var result = Main.Contact.select().crossJoin(Main.State).Count
-    result = Main.Contact.select().innerJoin(Main.State).Count
+    var result = Contact.select().crossJoin(Main.State).Count
+    result = Contact.select().innerJoin(Main.State).Count
 
-    result = Main.Contact.select().join(Main.State)
-        .on(Main.Contact#StateId.isEqualTo(Main.State#Id))
+    result = Contact.select().join(Main.State)
+        .on(Contact#StateId.isEqualTo(Main.State#Id))
         .Count
 
     result = Main.Contact.select().join(Main.State)
@@ -182,16 +183,16 @@ class SQLConstraintTest {
 
     //Just checking for successful query execution
     /*
-    result = Main.Contact.select().leftJoin(Main.State)
-        .on(Main.Contact#StateId.isEqualTo(Main.State#Id))
+    result = Contact.select().leftJoin(Main.State)
+        .on(Contact#StateId.isEqualTo(Main.State#Id))
         .Count
 
-    result = Main.Contact.select().rightJoin(Main.State)
-        .on(Main.Contact#StateId.isEqualTo(Main.State#Id))
+    result = Contact.select().rightJoin(Main.State)
+        .on(Contact#StateId.isEqualTo(Main.State#Id))
         .Count
 
-    result = Main.Contact.select().leftOuterJoin(Main.State)
-        .on(Main.Contact#StateId.isEqualTo(Main.State#Id))
+    result = Contact.select().leftOuterJoin(Main.State)
+        .on(Contact#StateId.isEqualTo(Main.State#Id))
         .Count
 
     */
@@ -206,7 +207,7 @@ class SQLConstraintTest {
     var count = 1
     for(name in names) {
       var y = name.split("[ \t]")
-      var x = new Main.Contact()
+      var x = new Contact()
       x.FirstName = y[0]
       x.LastName = y[1]
       x.Id = count
@@ -215,24 +216,24 @@ class SQLConstraintTest {
       count = count + 1
     }
 
-    var oneOfMany = Main.Contact.where(
-        Main.Contact#Id.isNotEqualTo(10)).Count
+    var oneOfMany = Contact.where(
+        Contact#Id.isNotEqualTo(10)).Count
     Assert.assertEquals(oneOfMany, 1000)
 
-    oneOfMany = Main.Contact.where(
-        Main.Contact#Id.isGreaterThan(2)).Count
+    oneOfMany = Contact.where(
+        Contact#Id.isGreaterThan(2)).Count
     Assert.assertEquals(oneOfMany, 999)
 
-    oneOfMany = Main.Contact.where(
-        Main.Contact#Id.isGreaterOrEqual(2)).Count
+    oneOfMany = Contact.where(
+        Contact#Id.isGreaterOrEqual(2)).Count
     Assert.assertEquals(oneOfMany, 1000)
 
-    oneOfMany = Main.Contact.where(
-        Main.Contact#Id.isLessThan(2)).Count
+    oneOfMany = Contact.where(
+        Contact#Id.isLessThan(2)).Count
     Assert.assertEquals(oneOfMany, 1)
 
-    oneOfMany = Main.Contact.where(
-        Main.Contact#Id.isLessOrEqual(2)).Count
+    oneOfMany = Contact.where(
+        Contact#Id.isLessOrEqual(2)).Count
     Assert.assertEquals(oneOfMany, 2)
 
 
