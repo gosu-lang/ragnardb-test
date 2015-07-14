@@ -269,6 +269,39 @@ class SQLConstraintTest {
   }
 
 
+  @Test
+  function TestLimitOffset() {
+
+    var names = loadNames()
+    for(name in names) {
+      var y = name.split("[ \t]")
+      var x = new Main.Contact()
+      x.FirstName = y[0]
+      x.LastName = y[1]
+      x.Age = Math.ceil(Math.random() * 100) as int
+      x.create()
+    }
+
+
+    var oneOfMany = Main.Contact.select().where(Main.Contact#LastName.isLike("%land%"))
+        .orderBy({Main.Contact#Id.asc(), Main.Contact#StateId.desc()}).limit(10)
+
+
+    oneOfMany = Main.Contact.select().where(Main.Contact#LastName.isLike("%s%"))
+        .orderBy({Main.Contact#Id.asc(), Main.Contact#StateId.desc()}).limit(10).offset(10)
+
+
+
+    Assert.assertEquals(oneOfMany.Count,10)
+
+    //Example.Contact.select().join(Example.Contact.
+
+
+  }
+
+
+
+
 
     function loadNames():List<String>{
     var br = new BufferedReader(new FileReader("src/test/resources/names.txt"))
