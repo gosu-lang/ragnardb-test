@@ -34,9 +34,9 @@ class PropertyListenerTest {
     Assert.assertNull(c.LastName)
 
     print("Preparing to add listener to Domain.Contact")
-    Domain.Contact.addListener(Domain.Contact#FirstName, \ theType -> {
+    Domain.Contact.addListener(Domain.Contact#FirstName, \ contact -> {
       print("Updating FirstName............ and setting last name to Doe")
-      (theType as Domain.Contact).LastName = "Doe"
+      contact.LastName = "Doe"
     })
     print("Done adding listener.")
 
