@@ -1,6 +1,6 @@
 
 CREATE TABLE CONTACTS (
-    UserId int,
+    Id int,
     FirstName nchar(50),
     LastName nchar(50),
     Age int
