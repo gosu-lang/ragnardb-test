@@ -10,12 +10,16 @@ uses ragnardb.RagnarDB
 uses ragnar.foo.Main //TODO move to proper test resource folder such as src/test/resources/ragnar/runtime/test/MainModel.ddl
 uses ragnardb.plugin.ISQLDdlType
 uses ragnar.foo.ContactsOlderThan
+uses ragnar.foo.myQuery2
+uses ragnar.foo.myQuery3
+uses ragnar.foo.myQuery5
 uses ragnardb.plugin.ISQLQueryType
 
 uses java.io.BufferedReader
 uses java.io.FileReader
 uses java.lang.Integer
 uses java.lang.Math
+uses java.util.ArrayList
 
 class QueryBootstrapTest {
 
@@ -34,7 +38,7 @@ class QueryBootstrapTest {
   function loadNames():List<String>{
     var br = new BufferedReader(new FileReader("src/test/resources/names.txt"))
     var x = br.readLine()
-    var strings = {"Sammy Chan"}
+    var strings = new ArrayList<String>()
     while(x != null){
       strings.add(x)
       x = br.readLine()
@@ -139,6 +143,24 @@ class QueryBootstrapTest {
         Assert.fail()
       }
     }
+
+    var mQ1 = ContactsOlderThan.execute(98)
+    for(mQ11 in mQ1){
+      print(mQ11.FirstName)
+    }
+
+    var mQ2 = myQuery2.execute("Kai")
+    for(mQ22 in mQ2){
+      print(mQ22.getFirstName())
+    }
+
+    var mQ3 = myQuery3.execute()
+    for(mQ33 in mQ3){
+      print(mQ33)
+    }
+
+    var mQ5 = myQuery5.execute("Kai")
+    print(mQ5)
   }
 
 
