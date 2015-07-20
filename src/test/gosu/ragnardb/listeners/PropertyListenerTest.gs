@@ -2,20 +2,21 @@ package ragnardb.listeners
 
 uses gw.lang.reflect.features.BoundPropertyReference
 uses gw.lang.reflect.features.PropertyReference
-uses org.junit.*
-uses ragnar.foo.Domain
+uses org.junit.Assert
+uses org.junit.Before
+uses org.junit.BeforeClass
+uses org.junit.Test
+uses ragnar.foo.Main
 uses ragnardb.RagnarDB
 uses ragnardb.plugin.SQLColumnPropertyInfo
-uses ragnardb.plugin.SQLTableType
 uses ragnardb.runtime.IHasListenableProperties
-uses ragnardb.runtime.SQLRecord
 
 class PropertyListenerTest {
 
   @BeforeClass
   static function beforeClass(){
     RagnarDB.setDBUrl("jdbc:h2:mem:PropertyListenerTest;DB_CLOSE_DELAY=-1");
-    RagnarDB.execStatement(Domain.SqlSource)
+    RagnarDB.execStatement(Main.SqlSource)
   }
 
   @Before
@@ -25,7 +26,7 @@ class PropertyListenerTest {
 
   @Test
   function createPropertyListener() {
-    var propRef = Domain.Contact#FirstName
+    var propRef = Main.Contact#FirstName
 
     Assert.assertTrue(propRef typeis PropertyReference)
     Assert.assertTrue(propRef.getPropertyInfo() typeis SQLColumnPropertyInfo)
@@ -33,13 +34,13 @@ class PropertyListenerTest {
     Assert.assertTrue(propRef.getPropertyInfo() typeis IHasListenableProperties)
     print("Domain.Contact#FirstName's PropertyInfo owner is: " + propRef.getPropertyInfo().getOwnersType().getName())
 
-    var context = new Domain.Contact() {
+    var context = new Main.Contact() {
         :FirstName = "Foo"
     }
 
     Assert.assertEquals("Foo", propRef.get(context))
 
-    propRef.addListener( \ contact -> {
+    propRef.addListener(\contact -> {
       print("Updating FirstName")
       contact.LastName = "BAZ"
       return contact.FirstName.toUpperCase()
@@ -55,7 +56,7 @@ class PropertyListenerTest {
 
   @Test
   function createInstanceListener() {
-    var c = new Domain.Contact()
+    var c = new Main.Contact()
     c.FirstName = "Brian"
     c.Id = 42
     c.create()
@@ -91,7 +92,8 @@ class PropertyListenerTest {
 
   @Test
   function instanceAndPropertyListeners() {
-    var c = new Domain.Contact()
+
+    var c = new Main.Contact()
     c.FirstName = "Brian"
     c.Id = 42
     c.create()
@@ -106,7 +108,7 @@ class PropertyListenerTest {
     })
 
     //add property listener
-    Domain.Contact#FirstName.addListener( \ contact -> {
+    Main.Contact#FirstName.addListener( \ contact -> {
       print("upcasing ${contact.FirstName}")
       return contact.FirstName.toUpperCase()
     })
@@ -115,12 +117,11 @@ class PropertyListenerTest {
 
     Assert.assertEquals("FOOFOO", c.FirstName)
 
-    Domain.Contact#FirstName.clearListeners() //clear everything
+    Main.Contact#FirstName.clearListeners() //clear everything
 
     c.FirstName = "foo"
 
     Assert.assertEquals("foo", c.FirstName)
-
   }
 
 }
