@@ -23,7 +23,6 @@ class PropertyListenerTest {
     RagnarDB.execStatement( "DELETE FROM CONTACTS" );
   }
 
-//  @Ignore
   @Test
   function createPropertyListener() {
     var propRef = Domain.Contact#FirstName
@@ -40,20 +39,18 @@ class PropertyListenerTest {
 
     Assert.assertEquals("Foo", propRef.get(context))
 
-    propRef.addListener(\contact -> {
+    propRef.addListener( \ contact -> {
       print("Updating FirstName")
-//      var fn = contact.FirstName
-//      contact.FirstName = fn.toUpperCase()
       contact.LastName = "BAZ"
       return contact.FirstName.toUpperCase()
     })
 
     context.FirstName = "Bar"
 
-    Assert.assertEquals("Bar", context.FirstName)
+    Assert.assertEquals("BAR", context.FirstName)
     Assert.assertEquals("BAZ", context.LastName)
 
-    (propRef.getPropertyInfo() as SQLColumnPropertyInfo).clearListeners()
+    propRef.clearListeners()
   }
 
   @Test
@@ -77,6 +74,7 @@ class PropertyListenerTest {
     boundPropRef.addListener(\contact -> {
       print("Updating FirstName")
       contact.LastName = "Moore"
+      return contact.FirstName
     })
 
     print("Done adding listener.")
@@ -88,19 +86,11 @@ class PropertyListenerTest {
     Assert.assertEquals("Kyle", c.FirstName)
     Assert.assertEquals("Moore", c.LastName)
 
-//    c#FirstName
-//        addListener( \ contact -> {
-//      print("Updating FirstName")
-//    })
-
-//    Assert.assertEquals(1, c#FirstName.getListeners())
-
-    (boundPropRef.getPropertyInfo() as SQLColumnPropertyInfo).clearListeners()
+    boundPropRef.clearListeners()
   }
 
-  @Ignore
   @Test
-  function listenForPropertyChange() {
+  function instanceAndPropertyListeners() {
     var c = new Domain.Contact()
     c.FirstName = "Brian"
     c.Id = 42
@@ -109,38 +99,28 @@ class PropertyListenerTest {
     Assert.assertEquals("Brian", c.FirstName)
     Assert.assertNull(c.LastName)
 
-    print("Preparing to add listener to Domain.Contact")
-//    Domain.Contact.addListener(Domain.Contact#FirstName, \ contact -> {
-//      print("Updating FirstName............ and setting last name to Doe")
-//      contact.LastName = "Doe"
-//    })
-    print("Done adding listener.")
+    //add bound listener
+    c#FirstName.addListener( \ contact -> {
+      print("appending 'foo' to ${contact.FirstName}")
+      return contact.FirstName + "foo"
+    })
 
-//    (c as SQLTableType).addListener(c#FirstName, \ etx -> {
-//      /*etx.equals("John") ?*/
-//      print("Updating FirstName: " + etx.toString())
-//      /*etx#LastName = "Doe"*/ //this should be etx.LastName, and etx should know its own type
-//    })
+    //add property listener
+    Domain.Contact#FirstName.addListener( \ contact -> {
+      print("upcasing ${contact.FirstName}")
+      return contact.FirstName.toUpperCase()
+    })
 
-    c = Domain.Contact.findById(42)
-    print("listener should be firing next")
-    c.FirstName = "John"
-    print("listener should have just fired")
-    c.Id = 42
-    (c as SQLRecord).update()
+    c.FirstName = "Foo"
 
-    c.Id = 99
-    (c as SQLRecord).update()
+    Assert.assertEquals("FOOFOO", c.FirstName)
 
-    c = Domain.Contact.findById(42)
+    Domain.Contact#FirstName.clearListeners() //clear everything
 
-    var d = Domain.Contact.findAllById(99) //no-op
+    c.FirstName = "foo"
 
-    Assert.assertEquals("John", c.FirstName)
-//    Assert.assertNull(c.LastName)
-    Assert.assertEquals("Doe", c.LastName)
+    Assert.assertEquals("foo", c.FirstName)
 
-    Assert.assertFalse(d.isHasElements()) //d is empty
   }
 
 }
