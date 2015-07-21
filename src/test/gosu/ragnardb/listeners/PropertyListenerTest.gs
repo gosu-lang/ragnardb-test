@@ -7,6 +7,7 @@ uses org.junit.Before
 uses org.junit.BeforeClass
 uses org.junit.Test
 uses ragnar.foo.Main
+uses ragnar.foo.Main.*
 uses ragnardb.RagnarDB
 uses ragnardb.plugin.SQLColumnPropertyInfo
 uses ragnardb.runtime.IHasListenableProperties
@@ -20,21 +21,21 @@ class PropertyListenerTest {
   }
 
   @Before
-  function clearContacts(){
-    RagnarDB.execStatement( "DELETE FROM CONTACTS" );
+  function clearContacts() {
+    Contact.deleteAll(true)
   }
 
   @Test
   function createPropertyListener() {
-    var propRef = Main.Contact#FirstName
+    var propRef = Contact#FirstName
 
     Assert.assertTrue(propRef typeis PropertyReference)
     Assert.assertTrue(propRef.getPropertyInfo() typeis SQLColumnPropertyInfo)
     Assert.assertFalse(propRef typeis IHasListenableProperties)
     Assert.assertTrue(propRef.getPropertyInfo() typeis IHasListenableProperties)
-    print("Domain.Contact#FirstName's PropertyInfo owner is: " + propRef.getPropertyInfo().getOwnersType().getName())
+    print("DoContact#FirstName's PropertyInfo owner is: " + propRef.getPropertyInfo().getOwnersType().getName())
 
-    var context = new Main.Contact() {
+    var context = new Contact() {
         :FirstName = "Foo"
     }
 
@@ -56,7 +57,7 @@ class PropertyListenerTest {
 
   @Test
   function createInstanceListener() {
-    var c = new Main.Contact()
+    var c = new Contact()
     c.FirstName = "Brian"
     c.Id = 42
     c.create()
@@ -93,7 +94,7 @@ class PropertyListenerTest {
   @Test
   function instanceAndPropertyListeners() {
 
-    var c = new Main.Contact()
+    var c = new Contact()
     c.FirstName = "Brian"
     c.Id = 42
     c.create()
@@ -108,7 +109,7 @@ class PropertyListenerTest {
     })
 
     //add property listener
-    Main.Contact#FirstName.addListener( \ contact -> {
+    Contact#FirstName.addListener( \ contact -> {
       print("upcasing ${contact.FirstName}")
       return contact.FirstName.toUpperCase()
     })
@@ -118,7 +119,7 @@ class PropertyListenerTest {
     Assert.assertEquals("FOObar", c.FirstName)
 
     c#FirstName.clearListeners()
-    Main.Contact#FirstName.clearListeners()
+    Contact#FirstName.clearListeners()
 
     c.FirstName = "foo"
 
@@ -127,7 +128,7 @@ class PropertyListenerTest {
 
   @Test
   function scopeMatters() {
-    var foo = new Main.Contact()
+    var foo = new Contact()
     foo.FirstName = ""
     foo.Id = 42
     foo.create()
@@ -138,13 +139,13 @@ class PropertyListenerTest {
       return contact.FirstName + "xxx"
     })
 
-    var bar = new Main.Contact()
+    var bar = new Contact()
     bar.FirstName = ""
     bar.Id = 99
     bar.create()
 
     //add unbound listener
-    Main.Contact#FirstName.addListener( \ contact -> {
+    Contact#FirstName.addListener( \ contact -> {
       print("upcasing ${contact.FirstName}")
       return contact.FirstName.toUpperCase()
     })
@@ -155,7 +156,7 @@ class PropertyListenerTest {
     Assert.assertEquals("FOOxxx", foo.FirstName)
     Assert.assertEquals("BAR", bar.FirstName)
 
-    Main.Contact#FirstName.clearListeners()
+    Contact#FirstName.clearListeners()
   }
 
 }
