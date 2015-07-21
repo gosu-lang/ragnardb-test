@@ -103,8 +103,8 @@ class PropertyListenerTest {
 
     //add bound listener
     c#FirstName.addListener( \ contact -> {
-      print("appending 'foo' to ${contact.FirstName}")
-      return contact.FirstName + "foo"
+      print("appending 'bar' to ${contact.FirstName}")
+      return contact.FirstName + "bar"
     })
 
     //add property listener
@@ -115,13 +115,47 @@ class PropertyListenerTest {
 
     c.FirstName = "Foo"
 
-    Assert.assertEquals("FOOFOO", c.FirstName)
+    Assert.assertEquals("FOObar", c.FirstName)
 
-    Main.Contact#FirstName.clearListeners() //clear everything
+    c#FirstName.clearListeners()
+    Main.Contact#FirstName.clearListeners()
 
     c.FirstName = "foo"
 
     Assert.assertEquals("foo", c.FirstName)
+  }
+
+  @Test
+  function scopeMatters() {
+    var foo = new Main.Contact()
+    foo.FirstName = ""
+    foo.Id = 42
+    foo.create()
+
+    //add bound listener
+    foo#FirstName.addListener( \ contact -> {
+      print("appending 'xxx' to ${contact.FirstName}")
+      return contact.FirstName + "xxx"
+    })
+
+    var bar = new Main.Contact()
+    bar.FirstName = ""
+    bar.Id = 99
+    bar.create()
+
+    //add unbound listener
+    Main.Contact#FirstName.addListener( \ contact -> {
+      print("upcasing ${contact.FirstName}")
+      return contact.FirstName.toUpperCase()
+    })
+
+    foo.FirstName = "foo"
+    bar.FirstName = "bar"
+
+    Assert.assertEquals("FOOxxx", foo.FirstName)
+    Assert.assertEquals("BAR", bar.FirstName)
+
+    Main.Contact#FirstName.clearListeners()
   }
 
 }
