@@ -1,3 +1,5 @@
+
+
 package ragnardb.runtime
 
 uses org.junit.Before
@@ -15,10 +17,13 @@ uses java.lang.Math
 uses java.util.ArrayList
 
 
+
 /**
  * Created by klu on 7/16/2015.
  */
 class QuerySQLTest {
+
+  /*
 
   @BeforeClass
   static function beforeClass(){
@@ -84,4 +89,7 @@ class QuerySQLTest {
 
   }
 
+  */
+
 }
+

@@ -22,8 +22,10 @@ class PropertyListenerTest {
 
   @Before
   function clearContacts() {
-    Contact.deleteAll(true)
+      Main.Tables.each(\t -> t.deleteAll(true))
   }
+
+
 
   @Test
   function createPropertyListener() {
