@@ -46,19 +46,24 @@ class TransactionTest {
       x.create()
 
     }
+    try {
+      Main.transaction(\->
+          {
+            var z = new Main.Contact()
+            z.create()
 
-    Main.transaction(\->
-        {
-          var z = new Main.Contact()
-          z.create()
 
+            //Main.Tables.each(\t -> t.deleteAll(true))
+            var x = Main.Contact.select().where(Main.Contact#FirstName.isGreaterThan(5)).on(Main.Contact#FirstName.isLike("%ddd%")).Count
+            print("Made it here???")
+            //This should cause an SQL error, canceling the entire transaction
+          }
+      )
+    }
+    catch (e){
+      print("Query failed as expected, transaction should roll back")
+    }
 
-          //Main.Tables.each(\t -> t.deleteAll(true))
-          var x = Main.Contact.select().where(Main.Contact#FirstName.isGreaterThan(5)).on(Main.Contact#FirstName.isLike("%ddd%")).Count
-          print("Made it here???")
-          //This should cause an SQL error, canceling the entire transaction
-        }
-    )
 
 
     Assert.assertEquals(1001, Main.Contact.select().Count)
