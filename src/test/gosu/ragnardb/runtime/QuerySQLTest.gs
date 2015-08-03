@@ -9,6 +9,7 @@ uses org.junit.Test
 uses ragnardb.RagnarDB
 uses ragnar.foo.SQLTesting
 uses ragnar.foo.MultiSelectOne
+uses ragnar.foo.BadQuery1
 
 uses java.io.BufferedReader
 uses java.io.FileReader
@@ -23,7 +24,7 @@ uses java.util.ArrayList
  */
 class QuerySQLTest {
 
-  /*
+
 
   @BeforeClass
   static function beforeClass(){
@@ -89,7 +90,7 @@ class QuerySQLTest {
 
   }
 
-  */
+
 
 }
 
