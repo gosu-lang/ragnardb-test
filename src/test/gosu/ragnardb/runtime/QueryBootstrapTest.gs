@@ -14,6 +14,7 @@ uses ragnar.foo.ContactsOlderThan
 uses ragnar.foo.myQuery2
 uses ragnar.foo.myQuery3
 uses ragnar.foo.myQuery5
+uses ragnar.foo.BadParsing
 uses ragnardb.plugin.ISQLQueryType
 
 uses java.io.BufferedReader
