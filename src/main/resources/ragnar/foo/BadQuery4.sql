@@ -1,0 +1,1 @@
+SELECT * FROM Contacts these are just words;
