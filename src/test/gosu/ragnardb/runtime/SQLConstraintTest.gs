@@ -293,7 +293,45 @@ class SQLConstraintTest {
 
 
 
+
+
     Assert.assertEquals(oneOfMany.Count,10)
+
+    //Example.Contact.select().join(Example.Contact.
+
+
+  }
+
+  @Test
+  function IsNullTest() {
+
+    var names = loadNames()
+
+      var x = new Main.Contact()
+      x.FirstName = "Patrick"
+      x.LastName = "Jennings"
+      x.Age = 5
+      x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+
+    var oneOfMany = Main.Contact.select().where(Main.Contact#Age.isNull())
+
+    Assert.assertEquals(oneOfMany.Count, 2)
+
+
+    oneOfMany = Main.Contact.select().where(Main.Contact#Age.isNotNull())
+
+    Assert.assertEquals(oneOfMany.Count,1)
 
     //Example.Contact.select().join(Example.Contact.
 
