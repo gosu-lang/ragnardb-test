@@ -365,7 +365,7 @@ class SQLConstraintTest {
        Main.Contact.select().where(Main.Contact#Age.isNotNull())
     )
 
-    Assert.assertEquals(oneOfMany.Count,3)
+    Assert.assertEquals(oneOfMany.Count, 3)
 
     //From here just checking for sucessful execution
 
@@ -384,6 +384,38 @@ class SQLConstraintTest {
 
 
     //Example.Contact.select().join(Example.Contact.
+
+
+  }
+
+  @Test
+  function NotTest() {
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+
+    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull())
+    )
+
+    Assert.assertEquals(oneOfMany.Count,1)
+
+
 
 
   }
