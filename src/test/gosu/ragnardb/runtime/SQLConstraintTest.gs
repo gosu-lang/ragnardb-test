@@ -339,6 +339,40 @@ class SQLConstraintTest {
   }
 
 
+  @Test
+  function UnionTest() {
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+
+    var oneOfMany = Main.Contact.select().where(Main.Contact#Age.isNull()).union(
+       Main.Contact.select().where(Main.Contact#Age.isNotNull())
+    )
+
+    Assert.assertEquals(oneOfMany.Count,3)
+
+    //Example.Contact.select().join(Example.Contact.
+
+
+  }
+
+
 
 
 
