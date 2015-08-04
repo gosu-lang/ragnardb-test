@@ -367,6 +367,22 @@ class SQLConstraintTest {
 
     Assert.assertEquals(oneOfMany.Count,3)
 
+    //From here just checking for sucessful execution
+
+    var y = Main.Contact.select().where(Main.Contact#Age.isNull()).unionAll(
+        Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
+
+    y = Main.Contact.select().where(Main.Contact#Age.isNull()).intersect(
+        Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
+
+
+    y = Main.Contact.select().where(Main.Contact#Age.isNull()).except(
+        Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
+
+
+
+
+
     //Example.Contact.select().join(Example.Contact.
 
 
