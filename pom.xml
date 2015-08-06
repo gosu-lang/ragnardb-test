@@ -23,7 +23,7 @@
     <repository>
       <id>gosu-lang.org-snapshots</id>
       <name>Official Gosu website (snapshots)</name>
-      <url>http://gosu-lang.org/nexus/content/repositories/snapshots</url>
+      <url>${dist.man.snapshotrepo.url}</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -32,6 +32,19 @@
       </snapshots>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gosu-lang.org-snapshots</id>
+      <name>Official Gosu website (snapshots)</name>
+      <url>${dist.man.snapshotrepo.url}</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
   <dependencies>
     <dependency>
