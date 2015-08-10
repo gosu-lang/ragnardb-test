@@ -1,0 +1,1 @@
+UPDATE INTO Contacts SET name = 'Me' WHERE name = 'Kai';

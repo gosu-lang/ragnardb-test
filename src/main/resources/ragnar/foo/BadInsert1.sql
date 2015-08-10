@@ -1,0 +1,1 @@
+INSERT Contacts VALUES("Yolo", "Swag", 420);

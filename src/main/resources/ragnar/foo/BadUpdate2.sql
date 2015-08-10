@@ -1,0 +1,1 @@
+UPDATE Contacts SET name = DEFAULT VALUE;
