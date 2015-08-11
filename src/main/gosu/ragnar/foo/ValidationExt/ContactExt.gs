@@ -27,6 +27,9 @@ class ContactExt  extends RagnarExt<Validation.Contact> {
       cfg.clearValidators()
       cfg.lengthBetween(Contact#FirstName, 5,10)
       cfg.requiredFields({Contact#LastName})
+    } else if(configLevel == 4){
+      cfg.requiredFields({Contact#FirstName})
+      cfg.unique(Contact#FirstName)
     }
   }
 
