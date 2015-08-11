@@ -369,6 +369,8 @@ class SQLConstraintTest {
 
     //From here just checking for sucessful execution
 
+
+
     var y = Main.Contact.select().where(Main.Contact#Age.isNull()).unionAll(
         Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
 
@@ -413,8 +415,44 @@ class SQLConstraintTest {
     var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull())
     )
 
+
+
     Assert.assertEquals(oneOfMany.Count,1)
 
+
+
+
+
+
+  }
+
+  @Test
+  function CountTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull() )
+    ).count(Main.Contact#FirstName)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(1l,one )
+    }
 
 
 
