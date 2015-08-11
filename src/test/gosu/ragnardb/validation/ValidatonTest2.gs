@@ -4,15 +4,14 @@ uses org.junit.Assert
 uses org.junit.Before
 uses org.junit.BeforeClass
 uses org.junit.Test
+uses ragnar.foo.Validation
 uses ragnar.foo.ValidationExt.ContactExt
 uses ragnardb.RagnarDB
-uses ragnar.foo.Validation
-uses ragnar.foo.Validation.*
 
 /**
- * Created by carson on 8/10/15.
+ * Created by klu on 8/11/2015.
  */
-class ValidationTest {
+class ValidatonTest2 {
 
   @BeforeClass
   static function beforeClass() {
@@ -26,24 +25,24 @@ class ValidationTest {
   }
 
   @Test
-  function validateFormat() {
-    ContactExt.setConfigure(1)
+  function validateRequired() {
+    ragnar.foo.ValidationExt.ContactExt.setConfigure(2)
     var contact = new Validation.Contact()
     Assert.assertFalse(contact.IsValid)
 
     contact.FirstName = "Name"
     Assert.assertFalse(contact.IsValid)
 
-    contact.LastName = "Name"
+    contact.LastName = "Again"
     Assert.assertFalse(contact.IsValid)
 
-    contact.LastName = "Gosu"
+    contact.StateId = 1
     Assert.assertTrue(contact.IsValid)
 
-    contact.FirstName = ""
+    contact.FirstName = null
     Assert.assertFalse(contact.IsValid)
 
-    contact.FirstName = "Name"
+    contact.FirstName = "Take2"
     Assert.assertTrue(contact.IsValid)
   }
 
