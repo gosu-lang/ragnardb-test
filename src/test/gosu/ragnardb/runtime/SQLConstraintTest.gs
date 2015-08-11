@@ -572,6 +572,41 @@ class SQLConstraintTest {
 
   }
 
+  @Test
+  function StringAggregateTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Laurel"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    var oneOfMany = Main.Contact.select().groupConcat(Main.Contact#FirstName)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( "Patrick,Laurel,Patrick" ,one )
+    }
+
+
+    oneOfMany = Main.Contact.select().count().groupConcatDistinct(Main.Contact#FirstName)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( "Laurel,Patrick" ,one )
+    }
+  }
+
 
 
 
