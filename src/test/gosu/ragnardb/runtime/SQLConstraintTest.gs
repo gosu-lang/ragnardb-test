@@ -510,6 +510,68 @@ class SQLConstraintTest {
     }
   }
 
+  @Test
+  function DistinctTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 4
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    var oneOfMany = Main.Contact.select().countDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( new Long(3) ,one )
+    }
+
+
+    oneOfMany = Main.Contact.select().maxDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(6 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().minDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(4 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().sumDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(new Long(15) ,one )
+    }
+
+    oneOfMany = Main.Contact.select().avgDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(5 ,one )
+    }
+
+  }
+
 
 
 
