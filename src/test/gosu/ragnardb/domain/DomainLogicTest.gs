@@ -9,6 +9,8 @@ uses ragnar.foo.Domain.*
 uses ragnardb.RagnarDB
 uses ragnardb.plugin.ISQLDdlType
 
+uses java.lang.Double
+
 class DomainLogicTest {
 
   @BeforeClass
@@ -47,6 +49,8 @@ class DomainLogicTest {
     var s = new Scott()
     s.FirstName = "Scott"
     s.create()
+
+
 
     var scott = Scott.where(Scott#FirstName.isEqualTo("Scott")).first()
     Assert.assertNotNull(scott)

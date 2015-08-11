@@ -8,10 +8,6 @@ uses java.lang.Iterable
 
 class CompanyExt extends RagnarExt<Main.Company> {
 
-  construct(table:String, id:String) {
-    super(table, id)
-  }
-
   property get Contactss() : Iterable<Main.Contact> {
     return load(Main.Contact#CompanyId)
   }

@@ -6,10 +6,6 @@ uses ragnardb.runtime.SQLRecord
 
 class ScottExt extends RagnarExt<Domain.Scott> {
 
-  construct(table:String, id:String) {
-    super(table, id)
-  }
-
   public function sayHi(arg : String) : String {
     return("Hi, ${arg}")
   }
