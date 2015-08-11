@@ -13,6 +13,7 @@ uses ragnardb.plugin.ISQLDdlType
 
 uses java.io.BufferedReader
 uses java.io.FileReader
+uses java.lang.Long
 uses java.lang.Math
 
 /**
@@ -447,12 +448,19 @@ class SQLConstraintTest {
     x.LastName = "Jennings"
     x.create()
 
-    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull() )
-    ).count(Main.Contact#FirstName)
+    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull() )).count(Main.Contact#FirstName)
 
     for (one in oneOfMany){
-      Assert.assertEquals(1l,one )
+      Assert.assertEquals( new Long(1) ,one )
     }
+
+
+    oneOfMany = Main.Contact.select().count()
+
+    for (one in oneOfMany){
+      Assert.assertEquals( new Long(3) ,one )
+    }
+
 
 
 
