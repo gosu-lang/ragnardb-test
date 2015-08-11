@@ -448,7 +448,7 @@ class SQLConstraintTest {
     x.LastName = "Jennings"
     x.create()
 
-    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull() )).count(Main.Contact#FirstName)
+    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull())).count(Main.Contact#FirstName)
 
     for (one in oneOfMany){
       Assert.assertEquals( new Long(1) ,one )
@@ -460,10 +460,54 @@ class SQLConstraintTest {
     for (one in oneOfMany){
       Assert.assertEquals( new Long(3) ,one )
     }
+  }
 
+  @Test
+  function MaxMinTest(){
 
+    var names = loadNames()
 
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
 
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 4
+    x.create()
+
+    var oneOfMany = Main.Contact.select().max(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(6 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().min(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(4 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().sum(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(new Long(15) ,one )
+    }
+
+    oneOfMany = Main.Contact.select().avg(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(5 ,one )
+    }
   }
 
 
