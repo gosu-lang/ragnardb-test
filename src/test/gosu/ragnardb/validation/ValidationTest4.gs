@@ -31,6 +31,18 @@ class ValidationTest4 {
 
     contact.FirstName = "Invalid"
     Assert.assertFalse(contact.IsValid)
+
+    contact.FirstName = "Kai"
+    Assert.assertFalse(contact.IsValid)
+
+    contact.LastName = "Lu"
+    Assert.assertFalse(contact.IsValid)
+
+    contact.FirstName = null
+    Assert.assertFalse(contact.IsValid)
+
+    contact.FirstName = "Valid"
+    Assert.assertTrue(contact.IsValid)
   }
 
 }
