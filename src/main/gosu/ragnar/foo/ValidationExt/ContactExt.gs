@@ -14,6 +14,8 @@ class ContactExt  extends RagnarExt<Validation.Contact> {
       if(val?.length() < 1) throw "First name must be non-empty"
     })
 
+    cfg.validateFormat(Contact#LastName, "Gosu")
+
   }
 
 }

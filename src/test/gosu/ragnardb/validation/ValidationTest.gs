@@ -25,14 +25,23 @@ class ValidationTest {
   }
 
   @Test
-  function basicValidation() {
+  function validateFormat() {
     var contact = new Validation.Contact()
     Assert.assertFalse(contact.IsValid)
+
+    contact.FirstName = "Name"
+    Assert.assertFalse(contact.IsValid)
+
+    contact.LastName = "Name"
+    Assert.assertFalse(contact.IsValid)
+
+    contact.LastName = "Gosu"
+    Assert.assertTrue(contact.IsValid)
 
     contact.FirstName = ""
     Assert.assertFalse(contact.IsValid)
 
-    contact.FirstName = "Test"
+    contact.FirstName = "Name"
     Assert.assertTrue(contact.IsValid)
   }
 
