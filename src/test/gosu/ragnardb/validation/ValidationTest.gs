@@ -30,15 +30,33 @@ class ValidationTest {
     ContactExt.setConfigure(1)
     var contact = new Validation.Contact()
     Assert.assertFalse(contact.IsValid)
+    var isSaved = contact.save()
+    Assert.assertFalse(isSaved)
+    var errors = contact.errors
+    for(var error in errors.values()){
+      for(var errorMsg in error){
+        print(errorMsg)
+      }
+    }
 
     contact.FirstName = "Name"
     Assert.assertFalse(contact.IsValid)
 
     contact.LastName = "Name"
     Assert.assertFalse(contact.IsValid)
+    isSaved = contact.save()
+    Assert.assertFalse(isSaved)
+    errors = contact.errors
+    for(var error in errors.values()){
+      for(var errorMsg in error){
+        print(errorMsg)
+      }
+    }
 
     contact.LastName = "Gosu"
     Assert.assertTrue(contact.IsValid)
+    isSaved = contact.save()
+    Assert.assertTrue(isSaved)
 
     contact.FirstName = ""
     Assert.assertFalse(contact.IsValid)
