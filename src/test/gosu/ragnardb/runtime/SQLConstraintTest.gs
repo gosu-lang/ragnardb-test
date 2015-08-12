@@ -607,6 +607,43 @@ class SQLConstraintTest {
     }
   }
 
+  @Test
+  function groupByTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Laurel"
+    x.LastName = "Jennings"
+    x.Age = 4
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    var oneOfMany = Main.Contact.select().sum(Main.Contact#Age).groupBy(Main.Contact#FirstName)
+
+    var y = 1
+    for (one in oneOfMany){
+      if(y == 1) {
+        Assert.assertEquals(new Long(4), one)
+      } else {
+        Assert.assertEquals(new Long(11), one)
+      }
+      y++
+    }
+
+  }
+
 
 
 
