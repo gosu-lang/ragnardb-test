@@ -1,0 +1,21 @@
+machine:
+
+  timezone:
+    America/Los_Angeles
+
+  java:
+    version:
+      oraclejdk8
+
+test:
+  # Call 'mvn integration-test site' instead of the default 'mvn integration-test'
+  override:
+    - mvn integration-test site -U
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+general:
+  # preserve the generated HTML test reports
+  artifacts:
+    - "target/site"

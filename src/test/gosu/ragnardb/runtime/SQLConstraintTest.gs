@@ -13,6 +13,7 @@ uses ragnardb.plugin.ISQLDdlType
 
 uses java.io.BufferedReader
 uses java.io.FileReader
+uses java.lang.Long
 uses java.lang.Math
 
 /**
@@ -335,6 +336,311 @@ class SQLConstraintTest {
 
     //Example.Contact.select().join(Example.Contact.
 
+
+  }
+
+
+  @Test
+  function UnionTest() {
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+
+    var oneOfMany = Main.Contact.select().where(Main.Contact#Age.isNull()).union(
+       Main.Contact.select().where(Main.Contact#Age.isNotNull())
+    )
+
+    Assert.assertEquals(oneOfMany.Count, 3)
+
+    //From here just checking for sucessful execution
+
+
+
+    var y = Main.Contact.select().where(Main.Contact#Age.isNull()).unionAll(
+        Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
+
+    y = Main.Contact.select().where(Main.Contact#Age.isNull()).intersect(
+        Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
+
+
+    y = Main.Contact.select().where(Main.Contact#Age.isNull()).except(
+        Main.Contact.select().where(Main.Contact#Age.isNotNull())).Count
+
+
+
+
+
+    //Example.Contact.select().join(Example.Contact.
+
+
+  }
+
+  @Test
+  function NotTest() {
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+
+    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull())
+    )
+
+
+
+    Assert.assertEquals(oneOfMany.Count,1)
+
+
+
+
+
+
+  }
+
+  @Test
+  function CountTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    var oneOfMany = Main.Contact.select().where(SQLConstraint.not(Main.Contact#Age.isNull())).count(Main.Contact#FirstName)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( new Long(1) ,one )
+    }
+
+
+    oneOfMany = Main.Contact.select().count()
+
+    for (one in oneOfMany){
+      Assert.assertEquals( new Long(3) ,one )
+    }
+  }
+
+  @Test
+  function MaxMinTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 4
+    x.create()
+
+    var oneOfMany = Main.Contact.select().max(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(6 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().min(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(4 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().sum(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(new Long(15) ,one )
+    }
+
+    oneOfMany = Main.Contact.select().avg(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(5 ,one )
+    }
+  }
+
+  @Test
+  function DistinctTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 4
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    var oneOfMany = Main.Contact.select().countDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( new Long(3) ,one )
+    }
+
+
+    oneOfMany = Main.Contact.select().maxDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(6 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().minDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(4 ,one )
+    }
+
+    oneOfMany = Main.Contact.select().sumDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(new Long(15) ,one )
+    }
+
+    oneOfMany = Main.Contact.select().avgDistinct(Main.Contact#Age)
+
+    for (one in oneOfMany){
+      Assert.assertEquals(5 ,one )
+    }
+
+  }
+
+  @Test
+  function StringAggregateTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Laurel"
+    x.LastName = "Jennings"
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.create()
+
+    var oneOfMany = Main.Contact.select().groupConcat(Main.Contact#FirstName)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( "Patrick,Laurel,Patrick" ,one )
+    }
+
+
+    oneOfMany = Main.Contact.select().count().groupConcatDistinct(Main.Contact#FirstName)
+
+    for (one in oneOfMany){
+      Assert.assertEquals( "Laurel,Patrick" ,one )
+    }
+  }
+
+  @Test
+  function groupByTest(){
+
+    var names = loadNames()
+
+    var x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 5
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Laurel"
+    x.LastName = "Jennings"
+    x.Age = 4
+    x.create()
+
+    x = new Main.Contact()
+    x.FirstName = "Patrick"
+    x.LastName = "Jennings"
+    x.Age = 6
+    x.create()
+
+    var oneOfMany = Main.Contact.select().sum(Main.Contact#Age).groupBy(Main.Contact#FirstName)
+
+    var y = 1
+    for (one in oneOfMany){
+      if(y == 1) {
+        Assert.assertEquals(new Long(4), one)
+      } else {
+        Assert.assertEquals(new Long(11), one)
+      }
+      y++
+    }
 
   }
 

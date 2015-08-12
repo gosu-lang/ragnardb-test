@@ -7,7 +7,6 @@
   <groupId>org.gosu-lang.gosu</groupId>
   <artifactId>ragnardb-test</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
 
   <name>ragnardb-test</name>
   <description>Test project for RagnarDB</description>
@@ -24,7 +23,7 @@
     <repository>
       <id>gosu-lang.org-snapshots</id>
       <name>Official Gosu website (snapshots)</name>
-      <url>http://gosu-lang.org/nexus/content/repositories/snapshots</url>
+      <url>${dist.man.snapshotrepo.url}</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -33,13 +32,25 @@
       </snapshots>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gosu-lang.org-snapshots</id>
+      <name>Official Gosu website (snapshots)</name>
+      <url>${dist.man.snapshotrepo.url}</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
   <dependencies>
     <dependency>
       <groupId>org.gosu-lang.gosu</groupId>
       <artifactId>gosu-core-api</artifactId>
       <version>${gosu.version}</version>
-      <!--<scope>runtime</scope>-->
     </dependency>
     <dependency>
       <groupId>org.gosu-lang.gosu</groupId>
@@ -51,7 +62,6 @@
       <groupId>org.gosu-lang.gosu</groupId>
       <artifactId>ragnardb</artifactId>
       <version>0.1-SNAPSHOT</version>
-      <!--<scope>runtime</scope>-->
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -69,29 +79,44 @@
   <build>
     <sourceDirectory>src/main/gosu</sourceDirectory>
     <testSourceDirectory>src/test/gosu</testSourceDirectory>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-    </testResources>
-    <pluginManagement>
-      <plugins>
-        <plugin> <!-- set java compatibility version -->
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <compilerArgs>
+            <arg></arg>
+          </compilerArgs>
+          <compilerId>gosuc</compilerId>
+          <fork>false</fork>
+          <includes>
+            <include>**/*.gs</include>
+            <include>**/*.gsx</include>
+            <include>**/*.gst</include>
+          </includes>
+          <useIncrementalCompilation>true</useIncrementalCompilation> <!-- TODO this must be true or else we cannot pick up files with multiple extensions -->
+          <verbose>true</verbose>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.gosu-lang.gosu</groupId>
+            <artifactId>plexus-compiler-gosu</artifactId>
+            <version>1.X-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.18.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>
