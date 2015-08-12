@@ -1,0 +1,1 @@
+INSERT INTO Contacts (name, ID SELECT name, ID FROM Contacts;

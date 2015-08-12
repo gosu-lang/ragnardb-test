@@ -6,7 +6,11 @@ uses ragnar.foo.BadQuery3
 uses ragnar.foo.BadQuery4
 uses ragnar.foo.BadQuery5
 uses ragnar.foo.BadQuery6
-
+uses ragnar.foo.BadInsert1
+uses ragnar.foo.BadInsert2
+uses ragnar.foo.BadInsert3
+uses ragnar.foo.BadUpdate1
+uses ragnar.foo.BadUpdate2
 
 
 /**
@@ -14,5 +18,8 @@ uses ragnar.foo.BadQuery6
  */
 class BadQueryRecovery {
 
+  function main(){
+
+  }
 
 }
