@@ -1,9 +1,7 @@
 package ragnardb.validation
 
-uses org.junit.Assert
-uses org.junit.Before
-uses org.junit.BeforeClass
-uses org.junit.Test
+uses gw.lang.reflect.TypeSystem
+uses org.junit.*
 uses ragnar.foo.Validation
 uses ragnardb.RagnarDB
 
@@ -14,8 +12,9 @@ class ValidationTest3 {
 
   @BeforeClass
   static function beforeClass() {
-    RagnarDB.setDBUrl("jdbc:h2:mem:validationtest;DB_CLOSE_DELAY=-1");
+    RagnarDB.setDBUrl("jdbc:h2:mem:validationtest3;DB_CLOSE_DELAY=-1");
     RagnarDB.execStatement(Validation.SqlSource)
+    TypeSystem.refresh(TypeSystem.getCurrentModule())
   }
 
   @Before
@@ -25,7 +24,7 @@ class ValidationTest3 {
 
   @Test
   function validateLength() {
-    ragnar.foo.ValidationExt.ContactExt.setConfigure(4)
+    ragnar.foo.ValidationExt.ContactExt.setConfigure(3)
     var contact = new Validation.Contact()
     Assert.assertFalse(contact.IsValid)
 
@@ -43,6 +42,10 @@ class ValidationTest3 {
 
     contact.LastName = null
     Assert.assertFalse(contact.IsValid)
+  }
+  @AfterClass
+  static function afterClass() {
+    RagnarDB.releaseConnection()
   }
 
 }
