@@ -58,14 +58,14 @@ class ForeignReferenceTest {
     var query = instance.State
     var result = query.getSQLString()
 
-    Assert.assertEquals("SELECT states.*  FROM states   WHERE Id = ?    ", result)
+    Assert.assertEquals("SELECT states.*  FROM states   WHERE Id = ?     ", result)
 
     var stateInstance = new Main.State()
     stateInstance.Id = 1
     var newQuery = stateInstance.Contact
     var newResult = newQuery.getSQLString()
 
-    Assert.assertEquals("SELECT contacts.*  FROM contacts   WHERE StateId = ?    ", newResult)
+    Assert.assertEquals("SELECT contacts.*  FROM contacts   WHERE StateId = ?     ", newResult)
 
   }
 
