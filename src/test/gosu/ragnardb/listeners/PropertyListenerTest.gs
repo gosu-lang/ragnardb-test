@@ -49,6 +49,8 @@ class PropertyListenerTest {
       return contact.FirstName.toUpperCase()
     })
 
+
+
     context.FirstName = "Bar"
 
     Assert.assertEquals("BAR", context.FirstName)

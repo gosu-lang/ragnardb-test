@@ -1,7 +1,7 @@
 CREATE TABLE Customers (
     CustomerID int auto_increment PRIMARY KEY,
     CustomerName nchar(50),
-    Address nchar(50),
+    Address nchar(50)
 );
 
 CREATE TABLE Orders (

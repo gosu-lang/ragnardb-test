@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS CONTACTS (
     first_name nchar(50),
     last_name nchar(50),
     age int,
-    state_id int
+    state_id int,
+    FOREIGN KEY (state_id) REFERENCES STATES (id)
 );
 
 
